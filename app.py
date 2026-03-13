@@ -1,13 +1,12 @@
 import streamlit as st
 import random
-import requests  # ใช้ตัวนี้แทน gspread เพื่อส่งข้อมูลผ่านท่อ Apps Script
+import requests
 from datetime import datetime
 
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 
 # --- 📍 จุดสำคัญ: ใส่ลิงก์ Apps Script ของคุณอุ้มที่นี่ ---
-# วางลิงก์ที่ก๊อปมาจาก Google Sheets (Deployment URL)
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_ZEwOWxaK3V-tfUgSSSV10EEF8WkHA7ZbyPNYgIp0IdazB3K1gCLpAtpPohAM2vKd2w/exec"
 
 # --- ส่วนหัวข้อเว็บ ---
@@ -48,7 +47,7 @@ if submitted:
         ]
         gift = random.choice(strengths)
 
-        # --- ส่วนส่งข้อมูลเข้า Google Sheets ผ่าน Apps Script ---
+        # ส่งข้อมูลเข้า Google Sheets
         data_to_send = {
             "name": name,
             "line_id": contact,
@@ -59,35 +58,25 @@ if submitted:
         }
 
         try:
-            # ยิงข้อมูลเข้าท่อส่งที่คุณอุ้มสร้างไว้
             response = requests.post(GOOGLE_SCRIPT_URL, json=data_to_send)
             if response.status_code == 200:
-                st.toast("✅ บันทึกข้อมูลเข้า Google Sheets เรียบร้อย!")
-            else:
-                st.toast("⚠️ บันทึกข้อมูลไม่สำเร็จ แต่คุณยังดูผลได้ค่ะ")
+                st.toast("✅ บันทึกข้อมูลเรียบร้อย!")
         except:
-            st.toast("❌ เชื่อมต่อ Google Sheets ไม่ได้")
+            st.toast("❌ เชื่อมต่อไม่ได้")
 
-        # --- แสดงผลหน้าจอ ---
+        # แสดงผลหน้าจอ
         st.markdown("---")
         st.success(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
         st.markdown(f"#### 💎 **ข้อดีที่ถูกซ่อนไว้ของคุณคือ:** \n > **{gift}**")
-        
         st.markdown("---")
         st.warning(f"### ⚠️ สารลับถึงคุณจาก LUMINA SOUL")
         st.markdown(f"""
-        **สิ่งที่คุณกำลังกังวลใจ...** แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด
-        
-        **แนะนำให้คุณรับ "สรุปผลวิเคราะห์เชิงลึก" โดยตรง เพื่อ:**
-        * 🗝️ **ปลดล็อกรหัสพันธสัญญา:** เข้าใจสาเหตุที่แท้จริงของอุปสรรค
-        * 🧭 **รับเข็มทิศนำทาง:** รู้วิธีใช้พรสวรรค์แก้ปัญหาปัจจุบัน
-        * 📈 **เปิดรับพลังงานใหม่:** พลิกชีวิตสู่ความสำเร็จในแบบของคุณเอง
+        **สิ่งที่คุณกำลังกังวลใจ...** แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ
         
         ---
         #### **👇 รับกุญแจปลดล็อกรหัสวิญญาณ (ฟรี)**
-        เพียงแอดไลน์แล้วส่งชื่อ **'{name}'** เพื่อรับคำชี้แนะสู่ความสำเร็จได้ทันทีค่ะ ✨
+        เพียงแอดไลน์แล้วส่งชื่อ **'{name}'** เพื่อรับคำชี้แนะได้ทันทีค่ะ ✨
         """)
-        
-        st.link_button("👉 ติดต่อรับคำปรึกษาฉบับเต็ม (Personal Consulting)", "https://lin.ee/jmI4z6G")
+        st.link_button("👉 ติดต่อรับคำปรึกษาฉบับเต็ม", "https://lin.ee/jmI4z6G")
     else:
-        st.error("⚠️ โปรดระบุชื่อ ID Line และความกังวลใจให้ครบถ้วนนะคะ")
+        st.error("⚠️ โปรดระบุข้อมูลให้ครบถ้วนนะคะ")
