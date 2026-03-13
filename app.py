@@ -6,7 +6,7 @@ from datetime import datetime
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 
-# --- 📍 จุดสำคัญ: ใส่ลิงก์ Apps Script ของคุณอุ้มที่นี่ ---
+# --- 📍 จุดเชื่อมต่อที่คุณอุ้มสร้างไว้ ---
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_ZEwOWxaK3V-tfUgSSSV10EEF8WkHA7ZbyPNYgIp0IdazB3K1gCLpAtpPohAM2vKd2w/exec"
 
 # --- ส่วนหัวข้อเว็บ ---
@@ -29,7 +29,6 @@ with st.form("lumina_v_final"):
     category = st.selectbox("เรื่องที่ต้องการให้ช่วยเช็กพลังงาน:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
     
     st.markdown("**ระบุสิ่งที่ติดค้างในใจ หรือความกังวลที่ต้องการทางออก**")
-    st.caption("(เพื่อรับคำชี้แนะจาก Oversoul ในการดึงศักยภาพที่ซ่อนอยู่ของคุณออกมา)")
     question = st.text_area("", placeholder="เช่น ตอนนี้ติดขัดเรื่องงาน...", label_visibility="collapsed")
     
     submitted = st.form_submit_button("🔮 เริ่มกระบวนการถอดรหัสพลังงาน")
@@ -58,25 +57,20 @@ if submitted:
         }
 
         try:
+            # ยิงข้อมูลเข้าท่อส่งที่คุณอุ้มสร้างไว้
             response = requests.post(GOOGLE_SCRIPT_URL, json=data_to_send)
             if response.status_code == 200:
-                st.toast("✅ บันทึกข้อมูลเรียบร้อย!")
+                st.toast("✅ บันทึกข้อมูลสำเร็จ!")
         except:
-            st.toast("❌ เชื่อมต่อไม่ได้")
+            st.toast("⚠️ เชื่อมต่อชีทไม่ได้ แต่ผลวิเคราะห์ยังออกปกติค่ะ")
 
-        # แสดงผลหน้าจอ
+        # --- แสดงผลหน้าจอ ---
         st.markdown("---")
         st.success(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
         st.markdown(f"#### 💎 **ข้อดีที่ถูกซ่อนไว้ของคุณคือ:** \n > **{gift}**")
         st.markdown("---")
         st.warning(f"### ⚠️ สารลับถึงคุณจาก LUMINA SOUL")
-        st.markdown(f"""
-        **สิ่งที่คุณกำลังกังวลใจ...** แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ
-        
-        ---
-        #### **👇 รับกุญแจปลดล็อกรหัสวิญญาณ (ฟรี)**
-        เพียงแอดไลน์แล้วส่งชื่อ **'{name}'** เพื่อรับคำชี้แนะได้ทันทีค่ะ ✨
-        """)
+        st.markdown(f"แอดไลน์ส่งชื่อ **'{name}'** เพื่อรับคำชี้แนะฉบับเต็มได้เลยค่ะ")
         st.link_button("👉 ติดต่อรับคำปรึกษาฉบับเต็ม", "https://lin.ee/jmI4z6G")
     else:
         st.error("⚠️ โปรดระบุข้อมูลให้ครบถ้วนนะคะ")
