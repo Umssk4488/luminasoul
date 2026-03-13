@@ -6,14 +6,15 @@ from datetime import datetime
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 
-# 📍 ลิงก์ Web App URL ของคุณอุ้ม
+# 📍 ลิงก์ Web App URL ของคุณอุ้ม (ห้ามลืมเปลี่ยนถ้ามีการสร้างใหม่นะครับ)
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjNIr948oDKixAVajbf7me-kuABFyRopjKVmdx-PmMkYpFL8WbXAraMMJkPy2lMKLJNg/exec"
 
 st.title("🔮 LUMINA SOUL")
 st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
 
 with st.form("lumina_final_healing"):
-    st.info("✨ สาส์นจากตัวตนภายใน... ทุกคำถามที่คุณติดค้าง มีคำตอบรออยู่เสมอ")
+    # --- เปลี่ยนหัวข้อตามที่คุณอุ้มเลือกครับ ---
+    st.info("✨ รหัสลับจิตวิญญาณ... เมื่อคุณเริ่มเข้าใจพลังงานตัวเอง ประตูสู่ความเป็นไปได้ใหม่ๆ จะเปิดออก")
     
     name = st.text_input("ชื่อ-นามสกุล")
     contact = st.text_input("ID Line (สำหรับรับสิทธิ์วิเคราะห์พลังงานเชิงลึก)")
@@ -35,7 +36,7 @@ if submitted:
     if name and contact and question:
         st.balloons()
         
-        # ระบบคำตอบ (สุ่ม 3 แนวทางต่อหมวดหมู่ เพื่อความหลากหลาย)
+        # ระบบเลือกกลุ่มคำตอบ (0, 1, 2)
         idx = (date % 3)
         
         if category == "ความรักและความสัมพันธ์":
@@ -62,7 +63,7 @@ if submitted:
 
         gift = res[idx]
 
-        # ส่งข้อมูลเข้า Sheets
+        # ส่งข้อมูลเข้า Google Sheets
         try:
             requests.post(GOOGLE_SCRIPT_URL, json={
                 "name": name, "line_id": contact, "birthdate": f"{date} {month} {year}",
@@ -70,7 +71,7 @@ if submitted:
             })
         except: pass
 
-        # --- แสดงผลหน้าจอ ---
+        # --- ส่วนแสดงผลหน้าจอ ---
         st.markdown("---")
         st.success(f"### ✨ ผลถอดรหัสรหัสชีวิต: คุณ {name}")
         st.markdown(f"#### 💎 **รหัสลับจาก Oversoul: พลังงานดั้งเดิมที่คุณได้รับมาตั้งแต่วันเกิด...** \n > **{gift}**")
