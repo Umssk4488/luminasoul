@@ -61,4 +61,86 @@ st.markdown("""
     }
 
     /* 6. ปรับแต่งกล่อง Input/Select/TextArea */
-    .stTextInput>div>div>input, .stSelectbox>div>div>div, .stTextArea>div>div>textarea, .stNumberInput>div>div
+    .stTextInput>div>div>input, .stSelectbox>div>div>div, .stTextArea>div>div>textarea, .stNumberInput>div>div>input {
+        border-radius: 12px !important;
+        border: 1px solid #e0e0e0 !important;
+        padding: 10px;
+        background-color: rgba(255,255,255,0.8);
+    }
+    .stTextInput>div>div>input:focus, .stSelectbox>div>div>div:focus, .stTextArea>div>div>textarea:focus {
+        border-color: #ba68c8 !important;
+        box-shadow: 0 0 0 2px rgba(186, 104, 200, 0.2) !important;
+    }
+    
+    /* ปรับปรุงกล่อง Info, Success, Warning */
+    .stAlert {
+        border-radius: 12px;
+        border: none;
+    }
+    div[data-testid="stMarkdownContainer"] hr {
+        border-top: 1px solid #e0d7f1;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# 📍 ลิงก์ Web App URL (เราตรวจสอบแล้วว่าเชื่อมต่อกับชีทของคุณ Lumina แน่นอนค่ะ)
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjNIr948oDKixAVajbf7me-kuABFyRopjKVmdx-PmMkYpFL8WbXAraMMJkPy2lMKLJNg/exec"
+
+st.title("🔮 LUMINA SOUL")
+st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
+
+with st.form("lumina_premium_pastel_v2"):
+    st.info("✨ รหัสลับจิตวิญญาณ... เมื่อคุณเริ่มเข้าใจพลังงานตัวเอง ประตูสู่ความเป็นไปได้ใหม่ๆ จะเปิดออก")
+    
+    name = st.text_input("ชื่อ-นามสกุล")
+    contact = st.text_input("ID Line (เพื่อรับสิทธิ์วิเคราะห์ปมชีวิตเชิงลึกฟรี)")
+    
+    col1, col2, col3 = st.columns(3)
+    with col1: date = st.number_input("วันที่เกิด", 1, 31, 1)
+    with col2: month = st.selectbox("เดือนเกิด", ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"])
+    with col3: year = st.number_input("ปี พ.ศ. เกิด", 2450, 2600, 2535)
+
+    category = st.selectbox("ด้านที่คุณต้องการรับพลังงานนำทางในวันนี้:", 
+                            ["ความรักและความสัมพันธ์", "การงานและเส้นทางชีวิต", "โชคลาภและกระแสการเงิน"])
+    
+    st.markdown("**✨เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?**")
+    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจให้อุ้มฟังหน่อยนะคะ...", height=120)
+    
+    submitted = st.form_submit_button("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ")
+
+if submitted:
+    if len(name.strip()) < 2 or len(contact.strip()) < 3 or len(question.strip()) < 5:
+        st.error("⚠️ รบกวนระบุข้อมูลให้ครบถ้วน เพื่อให้เราสื่อสารกับพลังงานของคุณได้แม่นยำนะคะ")
+    else:
+        st.balloons()
+        idx = (date % 3)
+        
+        # (ชุดคำตอบเดิมที่ Lumina มั่นใจ)
+        if category == "ความรักและความสัมพันธ์":
+            res = ["หัวใจของคุณมีบารมีสูงนัก ความเจ็บปวดที่พบเจอคือการ 'คัดกรอง' พลังงานที่ไม่คู่ควรออกไป...", "อย่าเสียดายรักที่จากไป เพราะรหัสวันเกิดคุณบอกว่ามันคือการถอนพันธนาการเก่า...", "ความรักที่คุณตามหาไม่ได้อยู่ไกลตัว แต่มันถูกบดบังด้วยความกลัวในอดีต..."]
+            advice = "ความรักไม่ได้มีไว้เพื่อเติมเต็มส่วนที่ขาด แต่มีไว้เพื่อแบ่งปันส่วนที่เต็มจากข้างในค่ะ"
+        elif category == "การงานและเส้นทางชีวิต":
+            res = ["การติดขัดในตอนนี้ไม่ใช่จุดจบ แต่เป็นสัญญาณจาก Oversoul ว่าคุณกำลังเดินผิดทาง...", "ความมืดมนที่คุณเผชิญคือช่วงก่อนรุ่งสาง พลังสิงโตในตัวคุณกำลังถูกปลุกขึ้นมา...", "อย่ากังวลเรื่องการเริ่มต้นใหม่ รหัสชีวิตคุณคือผู้บุกเบิก..."]
+            advice = "ความสำเร็จไม่ได้วัดที่ความเร็ว แต่วัดที่ความสม่ำเสมอและความศรัทธาในตัวเองค่ะ"
+        else:
+            res = ["กระแสเงินของคุณเปรียบเสมือนสายน้ำที่กำลังถูกกักด้วยความกังวล...", "หนี้สินเป็นเพียง 'บทเรียน' ที่มาสอนเรื่องความสมดุล...", "คุณมีโชคลาภซ่อนอยู่ในรหัสวิญญาณ แต่พลังงานลบรอบตัวกำลังบดบังอยู่..."]
+            advice = "เงินทองคือพลังงานที่ไหลตามความสุข ยิ่งคุณมีใจที่เบาสบาย ทรัพย์จะยิ่งเข้าหาคุณค่ะ"
+
+        gift = res[idx]
+
+        # ส่งข้อมูลเข้า Sheets
+        try:
+            requests.post(GOOGLE_SCRIPT_URL, json={
+                "name": name, "line_id": contact, "birthdate": f"{date} {month} {year}",
+                "category": category, "question": question, "result": gift
+            })
+        except: pass
+
+        st.markdown("---")
+        st.success(f"### ✨ ผลถอดรหัสรหัสชีวิต: คุณ {name}")
+        st.markdown(f"#### 💎 **สะท้อนพลังงานจากวันเกิด: สัญญาจากภายในที่อยากบอกอะไรบางอย่างกับคุณ...** \n > **{gift}**")
+        st.info(f"💡 **ข้อคิด:** {advice}")
+        st.warning(f"⚠️ **สำหรับเรื่องที่คุณกังวล:** '{question[:60]}...' พลังงานบอกว่านี่คือปมที่รอการปลดล็อก และคุณไม่ได้เผชิญมันเพียงลำพังค่ะ")
+        st.markdown("#### **👇 ให้แสงสว่างนำทางชีวิตคุณต่อ...**")
+        st.write("สาส์นสั้นๆ นี้อาจยังไม่พอที่จะเยียวยาทุกอย่าง... แต่เราอยากให้คุณรู้ว่าคุณไม่ต้องแบกความทุกข์นี้ไว้เพียงลำพังนะคะ หากต้องการคำชี้แนะที่เจาะลึก ทักมาพูดคุยกับเราได้โดยตรงเลยค่ะ ✨")
+        st.link_button("👉 คุยกับที่ปรึกษา LUMINA SOUL", "https://lin.ee/jmI4z6G")
