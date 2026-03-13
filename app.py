@@ -104,7 +104,7 @@ with st.form("lumina_premium_pastel_v2"):
                             ["ความรักและความสัมพันธ์", "การงานและเส้นทางชีวิต", "โชคลาภและกระแสการเงิน"])
     
     st.markdown("**✨เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?**")
-    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจให้อุ้มฟังหน่อยนะคะ...", height=120)
+    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจ.", height=120)
     
     submitted = st.form_submit_button("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ")
 
