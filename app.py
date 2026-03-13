@@ -7,12 +7,9 @@ st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 
 st.markdown("""
     <style>
-    /* 1. พื้นหลังไล่สีนุ่มนวล (Premium Lavender -> Soft Peach) */
     .stApp {
         background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1f9 40%, #fdfbfb 70%, #fff1eb 100%);
     }
-
-    /* 2. ปรับปรุงหัวข้อหลักให้โดดเด่น */
     h1 {
         color: #4a148c;
         font-family: 'Sarabun', sans-serif;
@@ -21,8 +18,6 @@ st.markdown("""
         font-weight: 800;
         margin-bottom: 0px;
     }
-    
-    /* 3. ปรับปรุงหัวข้อรอง */
     h3 {
         color: #7e57c2;
         text-align: center;
@@ -30,8 +25,6 @@ st.markdown("""
         margin-top: 0px;
         margin-bottom: 30px;
     }
-
-    /* 4. ปรับกล่องฟอร์มให้ดูนุ่มนวล (Glassmorphism style light) */
     div[data-testid="stForm"] {
         background-color: rgba(255, 255, 255, 0.6);
         border-radius: 20px;
@@ -39,8 +32,6 @@ st.markdown("""
         box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         border: 1px solid rgba(255, 255, 255, 0.4);
     }
-
-    /* 5. ปรับแต่งปุ่มกดให้พรีเมียมไล่สี (Gradient Button with Hover effect) */
     div.stButton > button:first-child {
         background: linear-gradient(to right, #ba68c8 0%, #f06292 100%);
         color: white;
@@ -59,37 +50,26 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(186, 104, 200, 0.4);
     }
-
-    /* 6. ปรับแต่งกล่อง Input/Select/TextArea */
     .stTextInput>div>div>input, .stSelectbox>div>div>div, .stTextArea>div>div>textarea, .stNumberInput>div>div>input {
         border-radius: 12px !important;
         border: 1px solid #e0e0e0 !important;
         padding: 10px;
         background-color: rgba(255,255,255,0.8);
     }
-    .stTextInput>div>div>input:focus, .stSelectbox>div>div>div:focus, .stTextArea>div>div>textarea:focus {
-        border-color: #ba68c8 !important;
-        box-shadow: 0 0 0 2px rgba(186, 104, 200, 0.2) !important;
-    }
-    
-    /* ปรับปรุงกล่อง Info, Success, Warning */
     .stAlert {
         border-radius: 12px;
         border: none;
     }
-    div[data-testid="stMarkdownContainer"] hr {
-        border-top: 1px solid #e0d7f1;
-    }
     </style>
     """, unsafe_allow_html=True)
 
-# 📍 ลิงก์ Web App URL (เราตรวจสอบแล้วว่าเชื่อมต่อกับชีทของคุณ Lumina แน่นอนค่ะ)
+# 📍 ลิงก์ Web App URL (เชื่อมต่อ Google Sheets)
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjNIr948oDKixAVajbf7me-kuABFyRopjKVmdx-PmMkYpFL8WbXAraMMJkPy2lMKLJNg/exec"
 
 st.title("🔮 LUMINA SOUL")
 st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
 
-with st.form("lumina_premium_pastel_v2"):
+with st.form("lumina_premium_fix"):
     st.info("✨ รหัสลับจิตวิญญาณ... เมื่อคุณเริ่มเข้าใจพลังงานตัวเอง ประตูสู่ความเป็นไปได้ใหม่ๆ จะเปิดออก")
     
     name = st.text_input("ชื่อ-นามสกุล")
@@ -104,7 +84,8 @@ with st.form("lumina_premium_pastel_v2"):
                             ["ความรักและความสัมพันธ์", "การงานและเส้นทางชีวิต", "โชคลาภและกระแสการเงิน"])
     
     st.markdown("**✨เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?**")
-    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจ.", height=120)
+    # แก้ไข placeholder ให้สั้นและเข้าใจง่ายตามสั่งครับ
+    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจ..", height=120)
     
     submitted = st.form_submit_button("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ")
 
@@ -115,7 +96,6 @@ if submitted:
         st.balloons()
         idx = (date % 3)
         
-        # (ชุดคำตอบเดิมที่ Lumina มั่นใจ)
         if category == "ความรักและความสัมพันธ์":
             res = ["หัวใจของคุณมีบารมีสูงนัก ความเจ็บปวดที่พบเจอคือการ 'คัดกรอง' พลังงานที่ไม่คู่ควรออกไป...", "อย่าเสียดายรักที่จากไป เพราะรหัสวันเกิดคุณบอกว่ามันคือการถอนพันธนาการเก่า...", "ความรักที่คุณตามหาไม่ได้อยู่ไกลตัว แต่มันถูกบดบังด้วยความกลัวในอดีต..."]
             advice = "ความรักไม่ได้มีไว้เพื่อเติมเต็มส่วนที่ขาด แต่มีไว้เพื่อแบ่งปันส่วนที่เต็มจากข้างในค่ะ"
@@ -128,7 +108,6 @@ if submitted:
 
         gift = res[idx]
 
-        # ส่งข้อมูลเข้า Sheets
         try:
             requests.post(GOOGLE_SCRIPT_URL, json={
                 "name": name, "line_id": contact, "birthdate": f"{date} {month} {year}",
@@ -138,7 +117,10 @@ if submitted:
 
         st.markdown("---")
         st.success(f"### ✨ ผลถอดรหัสรหัสชีวิต: คุณ {name}")
-        st.markdown(f"#### 💎 **สะท้อนพลังงานจากวันเกิด: สัญญาจากภายในที่อยากบอกอะไรบางอย่างกับคุณ...** \n > **{gift}**")
+        
+        # แก้ไขตัวสะกดจาก สัญญา เป็น สัญญาณ เรียบร้อยครับ
+        st.markdown(f"#### 💎 **สะท้อนพลังงานจากวันเกิด: สัญญาณจากภายในที่อยากบอกอะไรบางอย่างกับคุณ...** \n > **{gift}**")
+        
         st.info(f"💡 **ข้อคิด:** {advice}")
         st.warning(f"⚠️ **สำหรับเรื่องที่คุณกังวล:** '{question[:60]}...' พลังงานบอกว่านี่คือปมที่รอการปลดล็อก และคุณไม่ได้เผชิญมันเพียงลำพังค่ะ")
         st.markdown("#### **👇 ให้แสงสว่างนำทางชีวิตคุณต่อ...**")
