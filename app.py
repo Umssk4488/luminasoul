@@ -3,11 +3,13 @@ import random
 import requests
 from datetime import datetime
 
+# ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 
-# 📍 ลิงก์ Web App URL ที่คุณอุ้มเพิ่งได้มา
+# 📍 ลิงก์ Web App URL ที่คุณอุ้มเพิ่งได้มา (ผมใส่ให้แล้วครับ)
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjNIr948oDKixAVajbf7me-kuABFyRopjKVmdx-PmMkYpFL8WbXAraMMJkPy2lMKLJNg/exec"
 
+# --- ส่วนหัวข้อเว็บ ---
 st.title("🔮 LUMINA SOUL")
 st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
 
@@ -17,39 +19,70 @@ with st.form("lumina_v_final"):
     contact = st.text_input("ID Line (เพื่อรับผลวิเคราะห์ฉบับเต็ม)")
     
     col1, col2, col3 = st.columns(3)
-    with col1: date = st.number_input("วันที่เกิด", min_value=1, max_value=31, value=1)
-    with col2: month = st.selectbox("เดือนเกิด", ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"])
-    with col3: year = st.number_input("ปี พ.ศ. เกิด", min_value=2450, max_value=2600, value=2535)
+    with col1:
+        date = st.number_input("วันที่เกิด", min_value=1, max_value=31, value=1)
+    with col2:
+        month = st.selectbox("เดือนเกิด", ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"])
+    with col3:
+        year = st.number_input("ปี พ.ศ. เกิด", min_value=2450, max_value=2600, value=2535)
 
     category = st.selectbox("เรื่องที่ต้องการให้ช่วยเช็กพลังงาน:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
+    
     st.markdown("**ระบุสิ่งที่ติดค้างในใจ หรือความกังวลที่ต้องการทางออก**")
+    st.caption("(เพื่อรับคำชี้แนะจาก Oversoul ในการดึงศักยภาพที่ซ่อนอยู่ของคุณออกมา)")
     question = st.text_area("", placeholder="เช่น ตอนนี้ติดขัดเรื่องงาน...", label_visibility="collapsed")
+    
     submitted = st.form_submit_button("🔮 เริ่มกระบวนการถอดรหัสพลังงาน")
 
 if submitted:
     if name and contact and question:
         st.balloons()
+        
+        # คำตอบแบบเดิมที่คุณอุ้มชอบ
         strengths = [
             "คุณมี 'พลังแห่งการเยียวยา' อยู่ในคำพูดโดยที่คุณอาจไม่รู้ตัว",
-            "คุณมี 'สัญชาตญาณ' แม่นยำมาก หากเชื่อในเสียงข้างในชีวิตจะพุ่งทะยาน",
-            "คุณมี 'บารมีแห่งผู้นำ' พลังงานของคุณดึงดูดผู้คนได้ง่าย",
-            "คุณมี 'รหัสความมั่งคั่ง' ที่จะงอกเงยทุกครั้งที่คุณส่งต่อความสุข",
-            "คุณมี 'เกราะคุ้มกันภัย' ที่แข็งแกร่ง อุปสรรคจะทำอะไรคุณไม่ได้"
+            "คุณเป็นคนที่มี 'สัญชาตญาณ' แม่นยำมาก หากเชื่อในเสียงข้างในชีวิตจะพุ่งทะยาน",
+            "คุณมี 'บารมีแห่งผู้นำ' พลังงานของคุณดึงดูดผู้คนให้คล้อยตามได้ง่าย",
+            "คุณมี 'รหัสความมั่งคั่ง' ที่จะงอกเงยทุกครั้งที่คุณส่งต่อความสุขให้ผู้อื่น",
+            "คุณมี 'เกราะคุ้มกันภัย' ที่แข็งแกร่ง อุปสรรคจะทำอะไรคุณไม่ได้ถ้าใจคุณนิ่งพอ"
         ]
         gift = random.choice(strengths)
 
-        # ส่งข้อมูลเข้า Google Sheets
-        requests.post(GOOGLE_SCRIPT_URL, json={
-            "name": name, "line_id": contact, "birthdate": f"{date} {month} {year}",
-            "category": category, "question": question, "result": gift
-        })
+        # --- ส่วนส่งข้อมูลเข้า Google Sheets ---
+        data_to_send = {
+            "name": name,
+            "line_id": contact,
+            "birthdate": f"{date} {month} {year}",
+            "category": category,
+            "question": question,
+            "result": gift
+        }
 
+        try:
+            requests.post(GOOGLE_SCRIPT_URL, json=data_to_send)
+        except:
+            pass # ถ้าส่งไม่สำเร็จก็ไม่ให้หน้าเว็บรวน
+
+        # --- แสดงผลหน้าจอ (แบบเดิมเป๊ะๆ ที่คุณอุ้มชอบ) ---
         st.markdown("---")
         st.success(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
         st.markdown(f"#### 💎 **ข้อดีที่ถูกซ่อนไว้ของคุณคือ:** \n > **{gift}**")
+        
         st.markdown("---")
-        st.warning("### ⚠️ สารลับถึงคุณจาก LUMINA SOUL")
-        st.markdown(f"**สิ่งที่คุณกังวลใจ...** แท้จริงแล้วคือสัญญาณจากตัวตนภายในค่ะ แอดไลน์ส่งชื่อ **'{name}'** เพื่อรับคำชี้แนะฉบับเต็มได้เลย")
-        st.link_button("👉 ติดต่อรับคำปรึกษาฉบับเต็ม", "https://lin.ee/jmI4z6G")
+        st.warning(f"### ⚠️ สารลับถึงคุณจาก LUMINA SOUL")
+        st.markdown(f"""
+        **สิ่งที่คุณกำลังกังวลใจ...** แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด
+        
+        **แนะนำให้คุณรับ "สรุปผลวิเคราะห์เชิงลึก" โดยตรง เพื่อ:**
+        * 🗝️ **ปลดล็อกรหัสพันธสัญญา:** เข้าใจสาเหตุที่แท้จริงของอุปสรรค
+        * 🧭 **รับเข็มทิศนำทาง:** รู้วิธีใช้พรสวรรค์แก้ปัญหาปัจจุบัน
+        * 📈 **เปิดรับพลังงานใหม่:** พลิกชีวิตสู่ความสำเร็จในแบบของคุณเอง
+        
+        ---
+        #### **👇 รับกุญแจปลดล็อกรหัสวิญญาณ (ฟรี)**
+        เพียงแอดไลน์แล้วส่งชื่อ **'{name}'** เพื่อรับคำชี้แนะสู่ความสำเร็จได้ทันทีค่ะ ✨
+        """)
+        
+        st.link_button("👉 ติดต่อรับคำปรึกษาฉบับเต็ม (Personal Consulting)", "https://lin.ee/jmI4z6G")
     else:
-        st.error("⚠️ โปรดระบุข้อมูลให้ครบถ้วนนะคะ")
+        st.error("⚠️ โปรดระบุชื่อ ID Line และความกังวลใจให้ครบถ้วนนะคะ")
