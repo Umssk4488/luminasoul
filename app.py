@@ -1,20 +1,32 @@
 import streamlit as st
 import random
+import gspread
+from google.oauth2.service_account import Credentials
+from datetime import datetime
 
-# ตั้งค่าหน้าเว็บแบบดั้งเดิม (สีมาตรฐานที่คุณอุ้มชอบ)
+# ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
+
+# --- ฟังก์ชันเชื่อมต่อ Google Sheets (ใช้ข้อมูลเดิมที่คุณอุ้มเคยตั้งไว้ใน Secrets) ---
+def connect_sheets():
+    try:
+        scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+        creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=scope)
+        client = gspread.authorize(creds)
+        # ใส่ชื่อไฟล์ Google Sheets ของคุณอุ้มตรงนี้ (ถ้าชื่อเดิมคืออันไหน ใส่ชื่อนั้นเลยครับ)
+        sheet = client.open("LUMINA_SOUL_Data").sheet1 
+        return sheet
+    except Exception as e:
+        return None
 
 # --- หัวข้อหลัก ---
 st.title("🔮 LUMINA SOUL")
 st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
-st.write("ร่วมค้นหา 'ของขวัญจากจิตวิญญาณ' และแนวทางปลดล็อกชีวิตในแบบของคุณ")
 
-# --- ฟอร์มรับข้อมูล (แบบเดิมที่ดูสะอาดตา) ---
-with st.form("lumina_v4"):
+with st.form("lumina_v5"):
     st.info("✨ ทุกรหัสชีวิตมี 'พรสวรรค์' ซ่อนอยู่เสมอ")
-    
     name = st.text_input("ชื่อของคุณ (หรือชื่อเล่น)")
-    contact = st.text_input("ID Line (เพื่อรับผลวิเคราะห์ฉบับเต็มและคำแนะนำฟรี)")
+    contact = st.text_input("ID Line (เพื่อรับผลวิเคราะห์ฉบับเต็ม)")
     
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -24,17 +36,16 @@ with st.form("lumina_v4"):
     with col3:
         year = st.number_input("ปี พ.ศ. เกิด", min_value=2450, max_value=2600, value=2535)
 
-    category = st.selectbox("มิติจิตวิญญาณที่คุณต้องการคำชี้แนะ:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
-    question = st.text_area("เล่าสิ่งที่ติดค้างในใจ หรือสิ่งที่อยากให้จักรวาลช่วยนำทาง")
+    category = st.selectbox("เรื่องที่ต้องการให้ช่วยเช็กพลังงาน:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
+    question = st.text_area("เล่าสิ่งที่ติดค้างใจ หรือสิ่งที่อยากให้จักรวาลช่วยนำทาง")
     
     submitted = st.form_submit_button("🔮 เริ่มกระบวนการถอดรหัสพลังงาน")
 
-# --- ส่วนแสดงผล ---
 if submitted:
     if name and contact and question:
         st.balloons()
         
-        # สุ่มข้อดี 1 ข้อ (ของขวัญ)
+        # ส่วนสุ่มข้อดี
         strengths = [
             "คุณมี 'พลังแห่งการเยียวยา' อยู่ในคำพูดโดยที่บางทีคุณก็ไม่รู้ตัว",
             "คุณเป็นคนที่มี 'สัญชาตญาณ' แม่นยำมาก หากคุณเชื่อในเสียงข้างใน ชีวิตจะพุ่งทะยาน",
@@ -44,22 +55,25 @@ if submitted:
         ]
         gift = random.choice(strengths)
 
+        # --- ส่วนบันทึกข้อมูลลง Google Sheets ---
+        sheet = connect_sheets()
+        if sheet:
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            sheet.append_row([now, name, contact, f"{date} {month} {year}", category, question, gift])
+        else:
+            st.error("ระบบบันทึกข้อมูลขัดข้องชั่วคราว แต่คุณสามารถแคปหน้าจอเพื่อส่งให้คุณอุ้มได้ค่ะ")
+
+        # --- แสดงผลหน้าเว็บ ---
         st.markdown("---")
         st.success(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
         st.subheader(f"💎 ข้อดีที่ถูกซ่อนไว้ของคุณคือ: \n '{gift}'")
         
         st.markdown("---")
-        st.write(f"**วิเคราะห์พลังงานด้าน {category}:**")
-        st.info("ระบบตรวจพบสัญญาณการเปลี่ยนแปลงที่สำคัญในรหัสชีวิตของคุณ... มีบางอย่างที่กำลังรอการปลดล็อกเพื่อให้พลังงานกลับมาไหลเวียนอย่างสมดุล")
-        
-        # --- ส่วน Cliffhanger ที่คุณอุ้มเลือก (อันที่โดนใจที่สุด) ---
         st.warning(f"⚠️ **สารลับถึงคุณจาก LUMINA SOUL**")
         st.write(f"สิ่งที่คุณกำลังกังวลใจ... แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด แนะนำให้คุณรับสรุปผลวิเคราะห์เชิงลึกจากผู้เชี่ยวชาญโดยตรง")
         
         st.markdown("#### **👇 รับกุญแจปลดล็อกรหัสวิญญาณ (ฟรี)**")
-        st.write(f"เพียงแอดไลน์ส่งชื่อ **'{name}'** และแจ้งข้อดีที่คุณได้รับ เพื่อเริ่มต้นการเยียวยาและรับคำชี้แนะสู่ความสำเร็จของคุณได้เลยนะคะ ✨")
-        
+        st.write(f"เพียงแอดไลน์ส่งชื่อ **'{name}'** เพื่อรับคำแนะนำสู่ความสำเร็จของคุณได้เลยนะคะ ✨")
         st.link_button("👉 รับการถอดรหัสส่วนบุคคล (Personal Consulting)", "https://lin.ee/jmI4z6G")
-        st.caption("หรือแคปหน้าจอนี้ส่งไปที่เพจ 'พื้นที่สะท้อนชีวิต' ได้เลยค่ะ")
     else:
-        st.error("⚠️ เพื่อความแม่นยำสูงสุด โปรดระบุชื่อ ID Line และคำถามให้ครบถ้วนนะคะ")
+        st.error("⚠️ โปรดระบุข้อมูลให้ครบถ้วนนะคะ")
