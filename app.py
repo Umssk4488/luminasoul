@@ -13,22 +13,19 @@ def connect_sheets():
         scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
         creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=scope)
         client = gspread.authorize(creds)
-        # ตรวจสอบชื่อไฟล์ให้ตรงกับ LuminaSoul_Data
         sheet = client.open("LuminaSoul_Data").sheet1 
         return sheet
     except Exception as e:
         return None
 
-# --- ส่วนหัวข้อ ---
+# --- หัวข้อหลัก ---
 st.title("🔮 LUMINA SOUL")
 st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
-st.write("ร่วมค้นหา 'ของขวัญจากจิตวิญญาณ' และแนวทางปลดล็อกชีวิตในแบบของคุณ")
 
 with st.form("lumina_v_final"):
     st.info("✨ ทุกรหัสชีวิตมี 'พรสวรรค์' ซ่อนอยู่เสมอ")
-    
     name = st.text_input("ชื่อของคุณ (หรือชื่อเล่น)")
-    contact = st.text_input("ID Line (เพื่อรับผลวิเคราะห์ฉบับเต็มและคำแนะนำฟรี)")
+    contact = st.text_input("ID Line (เพื่อรับผลวิเคราะห์ฉบับเต็ม)")
     
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -38,14 +35,11 @@ with st.form("lumina_v_final"):
     with col3:
         year = st.number_input("ปี พ.ศ. เกิด", min_value=2450, max_value=2600, value=2535)
 
-    category = st.selectbox("เรื่องที่ต้องการให้ช่วยเช็กพลังงาน:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
+    category = st.selectbox("มิติจิตวิญญาณที่คุณต้องการคำชี้แนะ:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
     
-    # --- ปรับแต่งส่วนคำถามให้ สั้น กระชับ และมีตัวอย่างตามที่คุณอุ้มสั่ง ---
     st.markdown("**ระบุสิ่งที่ติดค้างในใจ หรือความกังวลที่ต้องการทางออก**")
     st.caption("(เพื่อรับคำชี้แนะจาก Oversoul ในการดึงศักยภาพที่ซ่อนอยู่ของคุณออกมา)")
-    
-    # ใส่ placeholder ตัวอย่างสั้นๆ
-    question = st.text_area("", placeholder="เช่น ตอนนี้ติดขัดเรื่องงาน, ความสัมพันธ์เริ่มมีปัญหา, อยากรู้วิธีเปิดดวงรับทรัพย์", label_visibility="collapsed")
+    question = st.text_area("", placeholder="เช่น ตอนนี้ติดขัดเรื่องงาน, ความสัมพันธ์เริ่มมีปัญหา...", label_visibility="collapsed")
     
     submitted = st.form_submit_button("🔮 เริ่มกระบวนการถอดรหัสพลังงาน")
 
@@ -53,7 +47,6 @@ if submitted:
     if name and contact and question:
         st.balloons()
         
-        # คลังข้อดี (Strengths)
         strengths = [
             "คุณมี 'พลังแห่งการเยียวยา' อยู่ในคำพูดโดยที่คุณอาจไม่รู้ตัว",
             "คุณเป็นคนที่มี 'สัญชาตญาณ' แม่นยำมาก หากเชื่อในเสียงข้างในชีวิตจะพุ่งทะยาน",
@@ -63,26 +56,34 @@ if submitted:
         ]
         gift = random.choice(strengths)
 
-        # บันทึกข้อมูลลง Sheets
         sheet = connect_sheets()
         if sheet:
             try:
                 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 sheet.append_row([now, name, contact, f"{date} {month} {year}", category, question, gift])
-            except:
-                pass 
+            except: pass 
 
-        # --- แสดงผลหน้าจอให้ลูกค้า ---
+        # --- ส่วนแสดงผลที่จัดใหม่ให้น่าอ่าน ---
         st.markdown("---")
         st.success(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
-        st.subheader(f"💎 ข้อดีที่ถูกซ่อนไว้ของคุณคือ: \n '{gift}'")
+        st.markdown(f"#### 💎 **ข้อดีที่ถูกซ่อนไว้ของคุณคือ:** \n > **{gift}**")
         
         st.markdown("---")
-        st.warning(f"⚠️ **สารลับถึงคุณจาก LUMINA SOUL**")
-        st.write(f"สิ่งที่คุณกำลังกังวลใจ... แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด แนะนำให้คุณรับสรุปผลวิเคราะห์เชิงลึกจากผู้เชี่ยวชาญโดยตรง")
+        st.warning(f"### ⚠️ สารลับถึงคุณจาก LUMINA SOUL")
         
-        st.markdown("#### **👇 รับกุญแจปลดล็อกรหัสวิญญาณ (ฟรี)**")
-        st.write(f"เพียงแอดไลน์ส่งชื่อ **'{name}'** เพื่อเริ่มต้นการเยียวยาและรับคำชี้แนะสู่ความสำเร็จของคุณได้เลยนะคะ ✨")
-        st.link_button("👉 รับการถอดรหัสส่วนบุคคล (Personal Consulting)", "https://lin.ee/jmI4z6G")
+        st.markdown(f"""
+        **สิ่งที่คุณกำลังกังวลใจ...** แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด
+        
+        **แนะนำให้คุณรับ "สรุปผลวิเคราะห์เชิงลึก" โดยตรง เพื่อ:**
+        * 🗝️ **ปลดล็อกรหัสพันธสัญญา:** เข้าใจสาเหตุที่แท้จริงของอุปสรรค
+        * 🧭 **รับเข็มทิศนำทาง:** รู้วิธีใช้พรสวรรค์แก้ปัญหาปัจจุบัน
+        * 📈 **เปิดรับพลังงานใหม่:** พลิกชีวิตสู่ความสำเร็จในแบบของคุณเอง
+        
+        ---
+        #### **👇 รับกุญแจปลดล็อกรหัสวิญญาณ (ฟรี)**
+        เพียงแอดไลน์แล้วส่งชื่อ **'{name}'** เพื่อรับคำชี้แนะสู่ความสำเร็จได้ทันทีค่ะ ✨
+        """)
+        
+        st.link_button("👉 ติดต่อรับคำปรึกษาฉบับเต็ม (Personal Consulting)", "https://lin.ee/jmI4z6G")
     else:
         st.error("⚠️ โปรดระบุชื่อ ID Line และความกังวลใจให้ครบถ้วนนะคะ")
