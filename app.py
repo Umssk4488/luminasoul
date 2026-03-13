@@ -11,14 +11,16 @@ st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 def connect_sheets():
     try:
         scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+        # ดึงข้อมูลจาก Secrets ที่คุณอุ้มวางไว้
         creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=scope)
         client = gspread.authorize(creds)
+        # เชื่อมกับไฟล์ชื่อ LuminaSoul_Data (ชื่อต้องตรงเป๊ะ)
         sheet = client.open("LuminaSoul_Data").sheet1 
         return sheet
     except Exception as e:
         return None
 
-# --- หัวข้อหลัก ---
+# --- ส่วนหัวข้อเว็บ ---
 st.title("🔮 LUMINA SOUL")
 st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
 
@@ -35,11 +37,11 @@ with st.form("lumina_v_final"):
     with col3:
         year = st.number_input("ปี พ.ศ. เกิด", min_value=2450, max_value=2600, value=2535)
 
-    category = st.selectbox("มิติจิตวิญญาณที่คุณต้องการคำชี้แนะ:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
+    category = st.selectbox("เรื่องที่ต้องการให้ช่วยเช็กพลังงาน:", ["การงานและเส้นทางชีวิต", "ความรักและความสัมพันธ์", "โชคลาภและกระแสการเงิน"])
     
     st.markdown("**ระบุสิ่งที่ติดค้างในใจ หรือความกังวลที่ต้องการทางออก**")
     st.caption("(เพื่อรับคำชี้แนะจาก Oversoul ในการดึงศักยภาพที่ซ่อนอยู่ของคุณออกมา)")
-    question = st.text_area("", placeholder="เช่น ตอนนี้ติดขัดเรื่องงาน, ความสัมพันธ์เริ่มมีปัญหา...", label_visibility="collapsed")
+    question = st.text_area("", placeholder="เช่น ตอนนี้ติดขัดเรื่องงาน...", label_visibility="collapsed")
     
     submitted = st.form_submit_button("🔮 เริ่มกระบวนการถอดรหัสพลังงาน")
 
@@ -56,21 +58,22 @@ if submitted:
         ]
         gift = random.choice(strengths)
 
+        # บันทึกข้อมูล
         sheet = connect_sheets()
         if sheet:
             try:
                 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                # บันทึก 7 คอลัมน์ (วันที่, ชื่อ, ID Line, วันเกิด, หมวดหมู่, คำถาม, ข้อดี)
                 sheet.append_row([now, name, contact, f"{date} {month} {year}", category, question, gift])
             except: pass 
 
-        # --- ส่วนแสดงผลที่จัดใหม่ให้น่าอ่าน ---
+        # --- แสดงผลหน้าจอ ---
         st.markdown("---")
         st.success(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
         st.markdown(f"#### 💎 **ข้อดีที่ถูกซ่อนไว้ของคุณคือ:** \n > **{gift}**")
         
         st.markdown("---")
         st.warning(f"### ⚠️ สารลับถึงคุณจาก LUMINA SOUL")
-        
         st.markdown(f"""
         **สิ่งที่คุณกำลังกังวลใจ...** แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด
         
