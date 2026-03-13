@@ -1,47 +1,19 @@
 import streamlit as st
 import random
 
-# ตั้งค่าหน้าเว็บและสี (ธีมมืด/ทอง)
-st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮", layout="centered")
+# ตั้งค่าหน้าเว็บแบบดั้งเดิม (สีมาตรฐานที่คุณอุ้มชอบ)
+st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 
-# --- การตกแต่ง CSS เพื่อความพรีเมียม ---
-st.markdown("""
-    <style>
-    .main {
-        background-color: #0e1117;
-    }
-    .stButton>button {
-        width: 100%;
-        border-radius: 20px;
-        background: linear-gradient(45deg, #FFD700, #B8860B);
-        color: black;
-        font-weight: bold;
-        border: none;
-    }
-    .stTextInput>div>div>input, .stSelectbox>div>div>select, .stTextArea>div>textarea {
-        background-color: #1c1f26;
-        color: white;
-        border: 1px solid #FFD700;
-    }
-    h1, h2, h3 {
-        color: #FFD700 !important;
-    }
-    .stAlert {
-        background-color: #1c1f26;
-        border: 1px solid #FFD700;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# --- ส่วนหัวข้อ ---
+# --- หัวข้อหลัก ---
 st.title("🔮 LUMINA SOUL")
-st.markdown("### Spiritual Decoding System")
+st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
 st.write("ร่วมค้นหา 'ของขวัญจากจิตวิญญาณ' และแนวทางปลดล็อกชีวิตในแบบของคุณ")
 
-# --- ฟอร์มรับข้อมูล ---
-with st.form("lumina_premium"):
-    st.markdown("#### 📝 ข้อมูลเพื่อเชื่อมต่อรหัสพลังงาน")
-    name = st.text_input("ชื่อของคุณ (หรือชื่อเรียก)")
+# --- ฟอร์มรับข้อมูล (แบบเดิมที่ดูสะอาดตา) ---
+with st.form("lumina_v4"):
+    st.info("✨ ทุกรหัสชีวิตมี 'พรสวรรค์' ซ่อนอยู่เสมอ")
+    
+    name = st.text_input("ชื่อของคุณ (หรือชื่อเล่น)")
     contact = st.text_input("ID Line (เพื่อรับผลวิเคราะห์ฉบับเต็มและคำแนะนำฟรี)")
     
     col1, col2, col3 = st.columns(3)
@@ -57,11 +29,12 @@ with st.form("lumina_premium"):
     
     submitted = st.form_submit_button("🔮 เริ่มกระบวนการถอดรหัสพลังงาน")
 
+# --- ส่วนแสดงผล ---
 if submitted:
     if name and contact and question:
         st.balloons()
         
-        # คลังข้อดี (คุณอุ้มมาเพิ่มเองได้เรื่อยๆ ครับ)
+        # สุ่มข้อดี 1 ข้อ (ของขวัญ)
         strengths = [
             "คุณมี 'พลังแห่งการเยียวยา' อยู่ในคำพูดโดยที่บางทีคุณก็ไม่รู้ตัว",
             "คุณเป็นคนที่มี 'สัญชาตญาณ' แม่นยำมาก หากคุณเชื่อในเสียงข้างใน ชีวิตจะพุ่งทะยาน",
@@ -72,16 +45,16 @@ if submitted:
         gift = random.choice(strengths)
 
         st.markdown("---")
-        st.markdown(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
-        st.info(f"💎 **ข้อดีที่ถูกซ่อนไว้ของคุณคือ:** \n\n '{gift}'")
+        st.success(f"### ✨ ของขวัญจากจิตวิญญาณสำหรับคุณ {name}")
+        st.subheader(f"💎 ข้อดีที่ถูกซ่อนไว้ของคุณคือ: \n '{gift}'")
         
         st.markdown("---")
-        st.subheader(f"📊 วิเคราะห์พลังงานด้าน {category}")
-        st.write("ระบบตรวจพบสัญญาณการเปลี่ยนแปลงที่สำคัญในรหัสชีวิตของคุณ... มีบางอย่างที่กำลังรอการปลดล็อกเพื่อให้พลังงานกลับมาไหลเวียนอย่างสมบูรณ์")
+        st.write(f"**วิเคราะห์พลังงานด้าน {category}:**")
+        st.info("ระบบตรวจพบสัญญาณการเปลี่ยนแปลงที่สำคัญในรหัสชีวิตของคุณ... มีบางอย่างที่กำลังรอการปลดล็อกเพื่อให้พลังงานกลับมาไหลเวียนอย่างสมดุล")
         
-        # ส่วน Cliffhanger ที่คุณอุ้มเลือก (ลึกซึ้ง)
+        # --- ส่วน Cliffhanger ที่คุณอุ้มเลือก (อันที่โดนใจที่สุด) ---
         st.warning(f"⚠️ **สารลับถึงคุณจาก LUMINA SOUL**")
-        st.write("สิ่งที่คุณกำลังกังวลใจ... แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด แนะนำให้คุณรับสรุปผลวิเคราะห์เชิงลึกจากผู้เชี่ยวชาญโดยตรง")
+        st.write(f"สิ่งที่คุณกำลังกังวลใจ... แท้จริงแล้วคือสัญญาณจากตัวตนภายในที่ต้องการการสื่อสารค่ะ เพื่อให้คุณเข้าถึงคำตอบที่ชัดเจนที่สุด และปลดพันธนาการที่ทำให้ชีวิตติดขัด แนะนำให้คุณรับสรุปผลวิเคราะห์เชิงลึกจากผู้เชี่ยวชาญโดยตรง")
         
         st.markdown("#### **👇 รับกุญแจปลดล็อกรหัสวิญญาณ (ฟรี)**")
         st.write(f"เพียงแอดไลน์ส่งชื่อ **'{name}'** และแจ้งข้อดีที่คุณได้รับ เพื่อเริ่มต้นการเยียวยาและรับคำชี้แนะสู่ความสำเร็จของคุณได้เลยนะคะ ✨")
