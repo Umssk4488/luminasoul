@@ -1,24 +1,14 @@
 import streamlit as st
 import random
-import gspread
-from google.oauth2.service_account import Credentials
+import requests  # ใช้ตัวนี้แทน gspread เพื่อส่งข้อมูลผ่านท่อ Apps Script
 from datetime import datetime
 
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮")
 
-# --- ฟังก์ชันเชื่อมต่อ Google Sheets ---
-def connect_sheets():
-    try:
-        scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-        # ดึงข้อมูลจาก Secrets ที่คุณอุ้มวางไว้
-        creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=scope)
-        client = gspread.authorize(creds)
-        # เชื่อมกับไฟล์ชื่อ LuminaSoul_Data (ชื่อต้องตรงเป๊ะ)
-        sheet = client.open("LuminaSoul_Data").sheet1 
-        return sheet
-    except Exception as e:
-        return None
+# --- 📍 จุดสำคัญ: ใส่ลิงก์ Apps Script ของคุณอุ้มที่นี่ ---
+# วางลิงก์ที่ก๊อปมาจาก Google Sheets (Deployment URL)
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_ZEwOWxaK3V-tfUgSSSV10EEF8WkHA7ZbyPNYgIp0IdazB3K1gCLpAtpPohAM2vKd2w/exec"
 
 # --- ส่วนหัวข้อเว็บ ---
 st.title("🔮 LUMINA SOUL")
@@ -58,14 +48,25 @@ if submitted:
         ]
         gift = random.choice(strengths)
 
-        # บันทึกข้อมูล
-        sheet = connect_sheets()
-        if sheet:
-            try:
-                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                # บันทึก 7 คอลัมน์ (วันที่, ชื่อ, ID Line, วันเกิด, หมวดหมู่, คำถาม, ข้อดี)
-                sheet.append_row([now, name, contact, f"{date} {month} {year}", category, question, gift])
-            except: pass 
+        # --- ส่วนส่งข้อมูลเข้า Google Sheets ผ่าน Apps Script ---
+        data_to_send = {
+            "name": name,
+            "line_id": contact,
+            "birthdate": f"{date} {month} {year}",
+            "category": category,
+            "question": question,
+            "result": gift
+        }
+
+        try:
+            # ยิงข้อมูลเข้าท่อส่งที่คุณอุ้มสร้างไว้
+            response = requests.post(GOOGLE_SCRIPT_URL, json=data_to_send)
+            if response.status_code == 200:
+                st.toast("✅ บันทึกข้อมูลเข้า Google Sheets เรียบร้อย!")
+            else:
+                st.toast("⚠️ บันทึกข้อมูลไม่สำเร็จ แต่คุณยังดูผลได้ค่ะ")
+        except:
+            st.toast("❌ เชื่อมต่อ Google Sheets ไม่ได้")
 
         # --- แสดงผลหน้าจอ ---
         st.markdown("---")
