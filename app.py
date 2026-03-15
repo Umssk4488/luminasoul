@@ -8,86 +8,159 @@ st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮", layout="centered"
 
 st.markdown("""
 <style>
+html, body, [class*="css"] {
+    color: #2f1f38 !important;
+}
+
 .stApp {
     background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1f9 40%, #fdfbfb 70%, #fff1eb 100%);
+    color: #2f1f38 !important;
+}
+
+/* บังคับข้อความทุกส่วนให้มองเห็น แม้อยู่ในโหมดมืด */
+p, span, div, label, li, small {
+    color: #2f1f38 !important;
 }
 
 /* หัวข้อหลัก */
 h1 {
-    color: #4a148c;
+    color: #4a148c !important;
     font-family: 'Sarabun', sans-serif;
     text-align: center;
     font-weight: 800;
     margin-bottom: 0px;
 }
 
-h3 {
-    color: #7e57c2;
-    text-align: center;
-    font-weight: 400;
-    margin-top: 0px;
+h2, h3, h4, h5, h6 {
+    color: #7e57c2 !important;
 }
 
 /* ปุ่ม */
 div.stButton > button:first-child,
 div[data-testid="stFormSubmitButton"] > button {
-    background: linear-gradient(to right, #ba68c8 0%, #f06292 100%);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    padding: 0.7rem 2.5rem;
-    font-weight: bold;
-    font-size: 1.05rem;
-    transition: 0.3s all ease;
-    box-shadow: 0 4px 15px rgba(186, 104, 200, 0.3);
-    width: 100%;
-    margin-top: 10px;
+    background: linear-gradient(to right, #ba68c8 0%, #f06292 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 0.7rem 2.5rem !important;
+    font-weight: bold !important;
+    font-size: 1.05rem !important;
+    transition: 0.3s all ease !important;
+    box-shadow: 0 4px 15px rgba(186, 104, 200, 0.3) !important;
+    width: 100% !important;
+    margin-top: 10px !important;
 }
 
 div.stButton > button:first-child:hover,
 div[data-testid="stFormSubmitButton"] > button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(186, 104, 200, 0.4);
-    color: white;
+    color: white !important;
 }
 
-/* Input */
+/* Input / Select / Textarea */
 .stTextInput > div > div > input,
-.stSelectbox > div > div > div,
-.stTextArea > div > div > textarea,
-.stNumberInput > div > div > input {
+.stNumberInput > div > div > input,
+.stTextArea textarea,
+.stSelectbox div[data-baseweb="select"] > div {
     border-radius: 12px !important;
-    border: 1px solid #e0e0e0 !important;
-    background-color: rgba(255,255,255,0.88);
+    border: 1px solid #d8cde6 !important;
+    background-color: rgba(255,255,255,0.92) !important;
+    color: #2f1f38 !important;
+    -webkit-text-fill-color: #2f1f38 !important;
 }
 
-/* Alert */
+/* Placeholder */
+input::placeholder,
+textarea::placeholder {
+    color: #8a7a98 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a7a98 !important;
+}
+
+/* label บนฟอร์ม */
+label, .stMarkdown, .stTextInput label, .stNumberInput label, .stSelectbox label, .stTextArea label {
+    color: #4a3557 !important;
+}
+
+/* select dropdown */
+div[data-baseweb="select"] * {
+    color: #2f1f38 !important;
+}
+
+/* info / alert */
 .stAlert {
-    border-radius: 12px;
-    border: none;
+    border-radius: 12px !important;
+    border: none !important;
 }
 
-/* Card */
+/* cards */
 .result-card {
-    background: rgba(255,255,255,0.78);
-    padding: 22px;
-    border-radius: 18px;
-    box-shadow: 0 8px 24px rgba(126, 87, 194, 0.12);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    background: rgba(255,255,255,0.82) !important;
+    padding: 22px !important;
+    border-radius: 18px !important;
+    box-shadow: 0 8px 24px rgba(126, 87, 194, 0.12) !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    color: #2f1f38 !important;
 }
 
 .mini-card {
-    background: rgba(255,255,255,0.72);
-    padding: 14px 16px;
-    border-radius: 16px;
-    box-shadow: 0 4px 14px rgba(126, 87, 194, 0.10);
-    margin-bottom: 12px;
+    background: rgba(255,255,255,0.78) !important;
+    padding: 14px 16px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 14px rgba(126, 87, 194, 0.10) !important;
+    margin-bottom: 12px !important;
+    color: #2f1f38 !important;
 }
 
 .center-text {
-    text-align: center;
-    color: #5a3d5c;
+    text-align: center !important;
+    color: #5a3d5c !important;
+}
+
+/* ป้องกัน force dark mode บางเครื่อง */
+* {
+    -webkit-text-fill-color: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+    html, body, .stApp {
+        color: #2f1f38 !important;
+        background-color: transparent !important;
+    }
+
+    p, span, div, label, li, small {
+        color: #2f1f38 !important;
+    }
+
+    h1 {
+        color: #4a148c !important;
+    }
+
+    h2, h3, h4, h5, h6 {
+        color: #7e57c2 !important;
+    }
+
+    .result-card, .mini-card {
+        color: #2f1f38 !important;
+        background: rgba(255,255,255,0.88) !important;
+    }
+
+    .stTextInput > div > div > input,
+    .stNumberInput > div > div > input,
+    .stTextArea textarea,
+    .stSelectbox div[data-baseweb="select"] > div {
+        background-color: rgba(255,255,255,0.95) !important;
+        color: #2f1f38 !important;
+        -webkit-text-fill-color: #2f1f38 !important;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #8a7a98 !important;
+        -webkit-text-fill-color: #8a7a98 !important;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -307,7 +380,6 @@ if submitted:
 
         birthdate_text = f"{day_num} {birth_month_name} {year_num}"
 
-        # ส่งข้อมูลเข้า Google Sheet แบบเงียบ ๆ
         try:
             requests.post(
                 GOOGLE_SCRIPT_URL,
