@@ -2,10 +2,17 @@ import streamlit as st
 import requests
 
 # -----------------------------
-# 🎨 ตั้งค่าหน้าเว็บ
+# Page config
 # -----------------------------
-st.set_page_config(page_title="LUMINA SOUL", page_icon="🔮", layout="centered")
+st.set_page_config(
+    page_title="LUMINA SOUL",
+    page_icon="🔮",
+    layout="centered"
+)
 
+# -----------------------------
+# CSS
+# -----------------------------
 st.markdown("""
 <style>
 html, body, [class*="css"] {
@@ -21,16 +28,8 @@ p, span, div, label, li, small {
     color: #2f1f38 !important;
 }
 
-h1 {
-    color: #4a148c !important;
-    font-family: 'Sarabun', sans-serif;
-    text-align: center;
-    font-weight: 800;
-    margin-bottom: 0px;
-}
-
-h2, h3, h4, h5, h6 {
-    color: #7e57c2 !important;
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 !important;
 }
 
 div.stButton > button:first-child,
@@ -39,10 +38,10 @@ div[data-testid="stFormSubmitButton"] > button {
     color: white !important;
     border: none !important;
     border-radius: 25px !important;
-    padding: 0.75rem 1.6rem !important;
-    font-weight: bold !important;
-    font-size: 1.05rem !important;
-    transition: 0.3s all ease !important;
+    padding: 0.78rem 1.3rem !important;
+    font-weight: 700 !important;
+    font-size: 1.02rem !important;
+    transition: 0.25s all ease !important;
     box-shadow: 0 6px 18px rgba(186, 104, 200, 0.28) !important;
     width: 100% !important;
     margin-top: 10px !important;
@@ -86,8 +85,30 @@ div[data-baseweb="select"] * {
     border: none !important;
 }
 
+.hero-title-wrap {
+    text-align: left;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+.hero-brand {
+    font-size: 3.0rem;
+    font-weight: 800;
+    line-height: 1.02;
+    color: #3f234f !important;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-size: 2.0rem;
+    font-weight: 700;
+    line-height: 1.22;
+    color: #3f234f !important;
+}
+
 .hero-card {
-    background: rgba(255,255,255,0.52) !important;
+    background: rgba(255,255,255,0.58) !important;
     backdrop-filter: blur(6px);
     padding: 20px 18px !important;
     border-radius: 24px !important;
@@ -117,7 +138,7 @@ div[data-baseweb="select"] * {
 
 .mini-card {
     background: rgba(255,255,255,0.80) !important;
-    padding: 16px 16px !important;
+    padding: 16px !important;
     border-radius: 18px !important;
     box-shadow: 0 4px 16px rgba(126, 87, 194, 0.10) !important;
     margin-bottom: 12px !important;
@@ -131,6 +152,7 @@ div[data-baseweb="select"] * {
     text-align: center !important;
     box-shadow: 0 4px 14px rgba(126, 87, 194, 0.08) !important;
     margin-bottom: 10px !important;
+    min-height: 120px;
 }
 
 .review-card {
@@ -139,13 +161,6 @@ div[data-baseweb="select"] * {
     border-radius: 18px !important;
     box-shadow: 0 4px 14px rgba(126, 87, 194, 0.08) !important;
     margin-bottom: 12px !important;
-}
-
-.section-title {
-    color: #7b1fa2 !important;
-    font-weight: 700 !important;
-    margin-top: 10px !important;
-    margin-bottom: 8px !important;
 }
 
 .center-text {
@@ -167,6 +182,39 @@ hr {
     -webkit-text-fill-color: inherit;
 }
 
+@media (max-width: 768px) {
+    .hero-brand {
+        font-size: 2.25rem !important;
+        line-height: 1.02 !important;
+        letter-spacing: -0.4px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .hero-subtitle {
+        font-size: 1.15rem !important;
+        line-height: 1.32 !important;
+        font-weight: 700 !important;
+    }
+
+    .hero-card {
+        padding: 16px 14px !important;
+        border-radius: 20px !important;
+    }
+
+    .glow-box {
+        padding: 15px !important;
+        border-radius: 16px !important;
+    }
+
+    .result-card, .mini-card, .stat-card, .review-card {
+        border-radius: 16px !important;
+    }
+
+    .soft-note {
+        font-size: 0.92rem !important;
+    }
+}
+
 @media (prefers-color-scheme: dark) {
     html, body, .stApp {
         color: #2f1f38 !important;
@@ -175,14 +223,6 @@ hr {
 
     p, span, div, label, li, small {
         color: #2f1f38 !important;
-    }
-
-    h1 {
-        color: #4a148c !important;
-    }
-
-    h2, h3, h4, h5, h6 {
-        color: #7e57c2 !important;
     }
 
     .result-card, .mini-card, .stat-card, .review-card, .hero-card, .glow-box {
@@ -209,28 +249,28 @@ hr {
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# 📍 ลิงก์ Google Sheets
+# Google Sheets endpoint
 # -----------------------------
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjNIr948oDKixAVajbf7me-kuABFyRopjKVmdx-PmMkYpFL8WbXAraMMJkPy2lMKLJNg/exec"
 
 # -----------------------------
-# 🔢 ฟังก์ชันคำนวณเลข
+# Helpers
 # -----------------------------
-def reduce_number(n):
+def reduce_number(n: int) -> int:
     while n > 9 and n not in (11, 22, 33):
         n = sum(int(d) for d in str(n))
     return n
 
-def life_path_number(day, month_num, year_be):
+def life_path_number(day: int, month_num: int, year_be: int) -> int:
     digits = f"{day:02d}{month_num:02d}{year_be}"
     total = sum(int(d) for d in digits)
     return reduce_number(total)
 
-def birth_day_energy(day):
+def birth_day_energy(day: int) -> int:
     return reduce_number(day)
 
 # -----------------------------
-# 🔮 คำอธิบายเลข
+# Meanings
 # -----------------------------
 life_path_meanings = {
     1: "คุณมีพลังของผู้เริ่มต้น กล้าตัดสินใจ ชอบสร้างเส้นทางของตัวเอง และไม่เหมาะกับการใช้ชีวิตแบบที่ต้องกดตัวตนไว้ตลอดเวลา",
@@ -304,35 +344,31 @@ category_advice = {
 }
 
 # -----------------------------
-# 🔮 ฟังก์ชันสร้างคำตอบ
+# Generate content
 # -----------------------------
-def generate_main_result(category, life_number, birth_energy, question_text):
+def generate_main_result(category: str, life_number: int, birth_energy: int, question_text: str) -> str:
     if category == "ความรักและความสัมพันธ์":
         if life_number in [2, 6, 9, 11, 33]:
             return "พลังความรักของคุณเป็นพลังที่ลึกและจริงใจมาก คุณไม่ได้ต้องการแค่ความสัมพันธ์ แต่ต้องการความเชื่อมโยงที่สัมผัสถึงหัวใจจริง ๆ ช่วงนี้บทเรียนสำคัญคือการแยกให้ออกว่าอะไรคือความรัก และอะไรคือการยอมทนเพราะกลัวเสียใครบางคนไป"
         elif life_number in [1, 5, 8, 22]:
             return "ความรักของคุณมักเชื่อมโยงกับบทเรียนเรื่องคุณค่าในตัวเองและขอบเขตที่ชัดเจน คุณมีเสน่ห์และแรงดึงดูดสูง แต่หัวใจจะสงบได้จริงเมื่อคุณเลือกคนที่เคารพตัวตนของคุณ ไม่ใช่คนที่ทำให้คุณต้องเล็กลง"
-        else:
-            return "หัวใจของคุณกำลังเรียนรู้บางอย่างผ่านความสัมพันธ์ที่ผ่านมา สิ่งที่เกิดขึ้นไม่ได้มาเพื่อทำร้ายคุณ แต่มาเพื่อสอนให้คุณกลับมาเข้าใจความต้องการที่แท้จริงของหัวใจ และเปิดพื้นที่ให้ความสัมพันธ์ที่เหมาะสมกว่าเข้ามา"
+        return "หัวใจของคุณกำลังเรียนรู้บางอย่างผ่านความสัมพันธ์ที่ผ่านมา สิ่งที่เกิดขึ้นไม่ได้มาเพื่อทำร้ายคุณ แต่มาเพื่อสอนให้คุณกลับมาเข้าใจความต้องการที่แท้จริงของหัวใจ และเปิดพื้นที่ให้ความสัมพันธ์ที่เหมาะสมกว่าเข้ามา"
 
     if category == "การงานและเส้นทางชีวิต":
         if life_number in [1, 4, 8, 22]:
             return "เส้นทางการงานของคุณไม่ได้ธรรมดา คุณมีพลังในการสร้างบางอย่างให้เกิดขึ้นจริง ช่วงนี้อาจเหมือนถูกกดดันหรือถูกบีบให้ตัดสินใจ แต่แท้จริงแล้วชีวิตกำลังผลักคุณออกจากทางเดิม เพื่อพาไปสู่บทบาทที่ใหญ่และชัดเจนกว่าเดิม"
         elif life_number in [3, 5, 7, 11]:
             return "เส้นทางชีวิตของคุณเด่นเรื่องการค้นหา การสื่อสาร และการใช้ตัวตนที่แท้จริงเป็นเครื่องนำทาง งานที่เหมาะกับคุณคือสิ่งที่ทำแล้วใจไม่ฝืน และยิ่งคุณฟังสัญญาณจากข้างในมากเท่าไร เส้นทางจะยิ่งเปิดชัดขึ้น"
-        else:
-            return "การงานในช่วงนี้อาจดูเหมือนยังไม่ชัด แต่จริง ๆ แล้วคุณกำลังอยู่ในช่วงจัดระเบียบชีวิตใหม่ เพื่อให้สิ่งที่สอดคล้องกับหัวใจมากกว่าเดิมเข้ามาแทนที่ ชีวิตไม่ได้พาคุณหลงทาง มันกำลังพาคุณกลับเข้าหาตัวเอง"
+        return "การงานในช่วงนี้อาจดูเหมือนยังไม่ชัด แต่จริง ๆ แล้วคุณกำลังอยู่ในช่วงจัดระเบียบชีวิตใหม่ เพื่อให้สิ่งที่สอดคล้องกับหัวใจมากกว่าเดิมเข้ามาแทนที่ ชีวิตไม่ได้พาคุณหลงทาง มันกำลังพาคุณกลับเข้าหาตัวเอง"
 
     if life_number in [8, 4, 22]:
         return "พลังการเงินของคุณมีศักยภาพสูงมาก แต่จะเปิดเต็มที่เมื่อคุณจัดระบบความคิดและการตัดสินใจให้ชัดขึ้น เงินของคุณไม่ได้มาเพราะโชคอย่างเดียว แต่มาจากความสามารถในการสร้างมูลค่าและยืนระยะ"
     elif life_number in [5, 3, 1]:
         return "กระแสการเงินของคุณสัมพันธ์กับความกล้าลอง ความคิดสร้างสรรค์ และการขยับตัว หากช่วงนี้เงินนิ่งหรือช้า อาจไม่ใช่เพราะคุณไม่มีโชค แต่เป็นเพราะคุณกำลังต้องเปลี่ยนวิธีคิดหรือวิธีเปิดรับโอกาสใหม่"
-    else:
-        return "การเงินของคุณเชื่อมโยงกับพลังใจอย่างมาก เมื่อใจแบกความกังวลมากเกินไป กระแสทรัพย์จะติดขัดง่าย ช่วงนี้จึงเป็นจังหวะสำคัญในการเคลียร์ความกลัว ความไม่มั่นใจ และกลับมาเชื่อในคุณค่าของตัวเองอีกครั้ง"
+    return "การเงินของคุณเชื่อมโยงกับพลังใจอย่างมาก เมื่อใจแบกความกังวลมากเกินไป กระแสทรัพย์จะติดขัดง่าย ช่วงนี้จึงเป็นจังหวะสำคัญในการเคลียร์ความกลัว ความไม่มั่นใจ และกลับมาเชื่อในคุณค่าของตัวเองอีกครั้ง"
 
-def generate_soul_message(name, category, life_number, birth_energy, month_num):
+def generate_soul_message(name: str, category: str, life_number: int, birth_energy: int, month_num: int) -> str:
     month_energy = month_energy_meanings.get(month_num, "พลังเฉพาะของช่วงเวลาที่คุณเกิด")
-
     return f"""
 {name} เป็นคนที่มีพลังภายในเฉพาะตัว และไม่ได้เดินทางมาถึงจุดนี้โดยบังเอิญ
 
@@ -348,10 +384,15 @@ def generate_soul_message(name, category, life_number, birth_energy, month_num):
 """.strip()
 
 # -----------------------------
-# 🌌 ส่วนหัวเว็บ
+# Header
 # -----------------------------
-st.title("🔮 LUMINA SOUL")
-st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
+st.markdown("""
+<div class="hero-title-wrap">
+    <div class="hero-brand">🔮 LUMINA SOUL</div>
+    <div class="hero-subtitle">พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด</div>
+</div>
+""", unsafe_allow_html=True)
+
 st.write("---")
 
 st.markdown(
@@ -380,7 +421,7 @@ st.markdown(
 )
 
 # -----------------------------
-# ⭐ ส่วนความน่าเชื่อถือ
+# Trust section
 # -----------------------------
 st.markdown("### ✨ ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต")
 
@@ -388,7 +429,7 @@ c1, c2, c3 = st.columns(3)
 with c1:
     st.markdown("""
     <div class="stat-card">
-        <div style="font-size:1.25rem; font-weight:700; color:#8e24aa;">เข้าใจตัวเอง</div>
+        <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">เข้าใจตัวเอง</div>
         <div class="soft-note">เห็นจุดแข็ง จุดเปลี่ยน และบทเรียนที่กำลังเกิดขึ้น</div>
     </div>
     """, unsafe_allow_html=True)
@@ -396,7 +437,7 @@ with c1:
 with c2:
     st.markdown("""
     <div class="stat-card">
-        <div style="font-size:1.25rem; font-weight:700; color:#8e24aa;">สะท้อนชีวิต</div>
+        <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">สะท้อนชีวิต</div>
         <div class="soft-note">ช่วยมองความรัก งาน และการเงินในมุมที่ลึกขึ้น</div>
     </div>
     """, unsafe_allow_html=True)
@@ -404,7 +445,7 @@ with c2:
 with c3:
     st.markdown("""
     <div class="stat-card">
-        <div style="font-size:1.25rem; font-weight:700; color:#8e24aa;">ต่อยอดได้จริง</div>
+        <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">ต่อยอดได้จริง</div>
         <div class="soft-note">หากรู้สึกว่าตรง คุณสามารถอ่านเชิงลึกต่อได้ทันที</div>
     </div>
     """, unsafe_allow_html=True)
@@ -431,15 +472,15 @@ with r2:
 st.markdown("### 🔮 ตัวอย่างสิ่งที่คุณอาจค้นพบ")
 st.markdown("""
 <div class="mini-card">
-• ทำไมบางความสัมพันธ์ถึงเกิดซ้ำในชีวิต  
-• ทำไมช่วงนี้งานหรือการเงินถึงติดบางจุด  
-• พลังหลักที่ซ่อนอยู่ในตัวคุณ  
+• ทำไมบางความสัมพันธ์ถึงเกิดซ้ำในชีวิต<br>
+• ทำไมช่วงนี้งานหรือการเงินถึงติดบางจุด<br>
+• พลังหลักที่ซ่อนอยู่ในตัวคุณ<br>
 • เส้นทางชีวิตที่กำลังเรียกให้คุณเปลี่ยนแปลง
 </div>
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# 📝 ฟอร์ม
+# Form
 # -----------------------------
 with st.form("lumina_single_page_form"):
     name = st.text_input("ชื่อ-นามสกุล")
@@ -464,7 +505,7 @@ with st.form("lumina_single_page_form"):
     submitted = st.form_submit_button("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ")
 
 # -----------------------------
-# ⚙️ ประมวลผล
+# Processing
 # -----------------------------
 if submitted:
     name_clean = name.strip()
