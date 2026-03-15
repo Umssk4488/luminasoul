@@ -450,7 +450,7 @@ with c3:
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown("### 🌙 รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน")
+st.markdown("### 🌕 รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน💫")
 
 r1, r2 = st.columns(2)
 with r1:
