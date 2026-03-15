@@ -141,9 +141,6 @@ birth_day_meanings = {
     33: "วันเกิดของคุณสะท้อนพลังแห่งการเยียวยา การสอน และการรับใช้ด้วยหัวใจ"
 }
 
-# -----------------------------
-# 🪄 ข้อมูลเสริม
-# -----------------------------
 month_names = [
     "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
     "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
@@ -166,14 +163,11 @@ month_energy_meanings = {
 }
 
 category_advice = {
-    "ความรักและความสัมพันธ์": "ความรักไม่ได้มีไว้เพื่อเติมเต็มส่วนที่ขาด แต่มีไว้เพื่อแบ่งปันส่วนที่เต็มจากข้างใน",
-    "การงานและเส้นทางชีวิต": "ความสำเร็จไม่ได้วัดที่ความเร็ว แต่วัดที่ความสม่ำเสมอและความศรัทธาในตัวเอง",
-    "โชคลาภและกระแสการเงิน": "เงินคือพลังงานที่ไหลตามความชัดเจน ความเชื่อมั่น และการอนุญาตให้ตัวเองรับสิ่งดี ๆ"
+    "ความรักและความสัมพันธ์": "นี่คือคำสะท้อนพลังงานเบื้องต้น หากอยากอ่านลึกเฉพาะความสัมพันธ์ของคุณแบบเจาะรายละเอียด สามารถทักเข้ามาได้",
+    "การงานและเส้นทางชีวิต": "นี่คือคำสะท้อนเบื้องต้นของเส้นทางชีวิต หากต้องการอ่านลึกเรื่องงานและจังหวะชีวิตเฉพาะตัว สามารถทักเข้ามาได้",
+    "โชคลาภและกระแสการเงิน": "นี่คือคำสะท้อนเบื้องต้นของกระแสการเงิน หากต้องการอ่านลึกเฉพาะตัวเรื่องเงินและโอกาส สามารถทักเข้ามาได้"
 }
 
-# -----------------------------
-# 🔮 คำตอบตามหมวด + เลขชีวิต
-# -----------------------------
 def generate_main_result(category, life_number, birth_energy, question_text):
     if category == "ความรักและความสัมพันธ์":
         if life_number in [2, 6, 9, 11, 33]:
@@ -191,7 +185,6 @@ def generate_main_result(category, life_number, birth_energy, question_text):
         else:
             return "การงานในช่วงนี้อาจดูเหมือนยังไม่ชัด แต่จริง ๆ แล้วคุณกำลังอยู่ในช่วงจัดระเบียบชีวิตใหม่ เพื่อให้สิ่งที่สอดคล้องกับหัวใจมากกว่าเดิมเข้ามาแทนที่ ชีวิตไม่ได้พาคุณหลงทาง มันกำลังพาคุณกลับเข้าหาตัวเอง"
 
-    # การเงิน
     if life_number in [8, 4, 22]:
         return "พลังการเงินของคุณมีศักยภาพสูงมาก แต่จะเปิดเต็มที่เมื่อคุณจัดระบบความคิดและการตัดสินใจให้ชัดขึ้น เงินของคุณไม่ได้มาเพราะโชคอย่างเดียว แต่มาจากความสามารถในการสร้างมูลค่าและยืนระยะ"
     elif life_number in [5, 3, 1]:
@@ -212,15 +205,15 @@ def generate_soul_message(name, category, life_number, birth_energy, month_num):
 จึงเป็นไปได้ว่า ชีวิตของคุณไม่ได้มาเพื่ออยู่แบบเดิมไปเรื่อย ๆ
 แต่มาเพื่อเรียนรู้ เติบโต และค่อย ๆ เข้าใกล้เส้นทางที่สอดคล้องกับจิตวิญญาณมากขึ้น
 
-ในเรื่อง{category} ช่วงนี้อาจเป็นจังหวะของการมองให้ชัด ปล่อยสิ่งที่ไม่ใช่
-และเลือกสิ่งที่เบากับใจคุณมากขึ้น
+นี่คือการอ่านพลังงานเบื้องต้นเท่านั้น
+หากต้องการอ่านเชิงลึกแบบเฉพาะตัวในเรื่อง{category} สามารถทักมาพูดคุยต่อได้
 """.strip()
 
 # -----------------------------
 # 🌌 ส่วนหัวเว็บ
 # -----------------------------
 st.title("🔮 LUMINA SOUL")
-st.markdown("### พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด")
+st.markdown("### ถอดรหัสพลังงานวันเกิดเบื้องต้นฟรี")
 st.write("---")
 
 st.markdown(
@@ -232,11 +225,11 @@ st.markdown(
 # 📝 ฟอร์ม
 # -----------------------------
 with st.form("lumina_single_page_form"):
-    st.info("✨ รหัสลับจิตวิญญาณ... เมื่อคุณเริ่มเข้าใจพลังงานตัวเอง ประตูสู่ความเป็นไปได้ใหม่ ๆ จะเปิดออก")
+    st.info("✨ อ่านพลังงานชีวิตเบื้องต้นฟรี 1 ครั้ง เพื่อสะท้อนเส้นทางชีวิต ความรัก การงาน หรือการเงินของคุณ")
 
     name = st.text_input("ชื่อ-นามสกุล")
-    contact = st.text_input("ID Line (เพื่อรับสิทธิ์วิเคราะห์ปมชีวิตเชิงลึกฟรี)")
-
+    contact = st.text_input("ID Line (เพื่อรับผลสะท้อนพลังงานและสิทธิ์อ่านเชิงลึก)")
+    
     col1, col2, col3 = st.columns(3)
     with col1:
         birth_day = st.number_input("วันที่เกิด", min_value=1, max_value=31, value=1, step=1)
@@ -251,9 +244,9 @@ with st.form("lumina_single_page_form"):
     )
 
     st.markdown("**✨ เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?**")
-    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจ..", height=120)
+    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจแบบสั้น ๆ", height=120)
 
-    submitted = st.form_submit_button("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ")
+    submitted = st.form_submit_button("🔮 รับคำสะท้อนพลังงานฟรี")
 
 # -----------------------------
 # ⚙️ ประมวลผล
@@ -268,7 +261,7 @@ if submitted:
     elif len(contact_clean) < 3:
         st.error("กรุณากรอก ID Line ให้ถูกต้อง")
     elif len(question_clean) < 5:
-        st.error("กรุณาพิมพ์เรื่องที่กังวลใจอย่างน้อยสั้น ๆ เพื่อให้คำแนะนำเหมาะกับคุณมากขึ้น")
+        st.error("กรุณาพิมพ์เรื่องที่กังวลใจสั้น ๆ เพื่อให้คำสะท้อนเหมาะกับคุณมากขึ้น")
     else:
         month_num = month_map[birth_month_name]
         day_num = int(birth_day)
@@ -288,15 +281,12 @@ if submitted:
 
         main_result = generate_main_result(category, life_number, birth_energy, question_clean)
         soul_message = generate_soul_message(name_clean, category, life_number, birth_energy, month_num)
-        advice = category_advice.get(category, "จงเชื่อมั่นในจังหวะชีวิตของตัวเอง")
+        advice = category_advice.get(category, "หากอยากอ่านลึกเฉพาะตัว สามารถทักเข้ามาได้")
 
         birthdate_text = f"{day_num} {birth_month_name} {year_num}"
 
-        sheet_saved = False
-        sheet_error_text = ""
-
         try:
-            response = requests.post(
+            requests.post(
                 GOOGLE_SCRIPT_URL,
                 json={
                     "name": name_clean,
@@ -317,22 +307,18 @@ if submitted:
                 },
                 timeout=15
             )
-            if response.status_code == 200:
-                sheet_saved = True
-            else:
-                sheet_error_text = f"Google Sheet ตอบกลับรหัส {response.status_code}"
-        except Exception as e:
-            sheet_error_text = str(e)
+        except Exception:
+            pass
 
         st.balloons()
         st.markdown("---")
-        st.success(f"### ✨ ผลถอดรหัสพลังงานชีวิต: คุณ {name_clean}")
+        st.success(f"### ✨ ผลสะท้อนพลังงานเบื้องต้น: คุณ {name_clean}")
 
         st.markdown(
             f"""
             <div class="result-card">
                 <h4 style="color:#7b1fa2; margin-top:0;">🔢 เลขพลังงานของคุณ</h4>
-                <p><b>เลขเส้นทางชีวิต (Life Path):</b> {life_number}</p>
+                <p><b>เลขเส้นทางชีวิต:</b> {life_number}</p>
                 <p><b>เลขพลังงานวันเกิด:</b> {birth_energy}</p>
             </div>
             """,
@@ -342,7 +328,7 @@ if submitted:
         st.markdown(
             f"""
             <div class="mini-card">
-                <h4 style="color:#8e24aa; margin-top:0;">🌙 ความหมายเลขเส้นทางชีวิต</h4>
+                <h4 style="color:#8e24aa; margin-top:0;">🌙 ความหมายพลังชีวิต</h4>
                 <p>{life_meaning}</p>
             </div>
             """,
@@ -362,14 +348,14 @@ if submitted:
         st.markdown(
             f"""
             <div class="result-card">
-                <h4 style="color:#ad1457; margin-top:0;">🔮 สะท้อนพลังงานในด้าน{category}</h4>
+                <h4 style="color:#ad1457; margin-top:0;">🔮 คำสะท้อนในด้าน{category}</h4>
                 <p>{main_result}</p>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-        st.info(f"💡 ข้อคิดนำทาง: {advice}")
+        st.info(f"💡 {advice}")
 
         st.markdown(
             f"""
@@ -381,16 +367,9 @@ if submitted:
             unsafe_allow_html=True
         )
 
-        if sheet_saved:
-            st.success("✅ บันทึกข้อมูลลง Google Sheet เรียบร้อยแล้ว")
-        else:
-            st.warning("⚠️ ผลลัพธ์แสดงบนหน้าเว็บได้ปกติ แต่ยังบันทึกลง Google Sheet ไม่สำเร็จ")
-            if sheet_error_text:
-                st.caption(f"รายละเอียด: {sheet_error_text}")
-
-        st.markdown("#### 👇 หากอยากรับคำชี้แนะเชิงลึกเพิ่มเติม")
-        st.write("สามารถทักมาคุยกับที่ปรึกษา LUMINA SOUL ได้โดยตรงนะคะ ✨")
-        st.link_button("👉 คุยกับที่ปรึกษา LUMINA SOUL", "https://lin.ee/jmI4z6G")
+        st.markdown("#### 👇 หากอยากอ่านเชิงลึกแบบเฉพาะตัว")
+        st.write("สามารถทักมาคุยกับที่ปรึกษา LUMINA SOUL เพื่ออ่านต่อในเรื่องที่คุณต้องการได้เลย ✨")
+        st.link_button("👉 ทักเพื่ออ่านเชิงลึกส่วนตัว", "https://lin.ee/jmI4z6G")
 
 # -----------------------------
 # Footer
