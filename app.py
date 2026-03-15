@@ -423,7 +423,7 @@ st.markdown(
 # -----------------------------
 # Trust section
 # -----------------------------
-st.markdown("### ✨ ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต")
+st.markdown("### 🔑 ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต")
 
 c1, c2, c3 = st.columns(3)
 with c1:
@@ -499,7 +499,7 @@ with st.form("lumina_single_page_form"):
         ["ความรักและความสัมพันธ์", "การงานและเส้นทางชีวิต", "โชคลาภและกระแสการเงิน"]
     )
 
-    st.markdown("**✨ เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?**")
+    st.markdown("**⭐️ เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?**")
     question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจแบบสั้น ๆ", height=120)
 
     submitted = st.form_submit_button("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ")
@@ -568,7 +568,7 @@ if submitted:
 
         st.balloons()
         st.write("---")
-        st.success(f"### ✨ ผลสะท้อนพลังงานเบื้องต้น: คุณ {name_clean}")
+        st.success(f"### 🌟 ผลสะท้อนพลังงานเบื้องต้น: คุณ {name_clean}")
 
         st.markdown(
             f"""
@@ -644,7 +644,7 @@ if submitted:
 Lumina Soul จะช่วยสะท้อนสิ่งที่ชีวิตของคุณกำลังพยายามบอกคุณอยู่ ✨
 """)
 
-        st.link_button("👉 คุยกับที่ปรึกษา LUMINA SOUL", "https://lin.ee/jmI4z6G")
+        st.link_button("✳️👉 คุยกับที่ปรึกษา LUMINA SOUL", "https://lin.ee/jmI4z6G")
 
 # -----------------------------
 # Footer
