@@ -1,51 +1,17 @@
 import streamlit as st
 import requests
 
-# 1. การตั้งค่าหน้าเว็บ
+# -----------------------------
+# Page config
+# -----------------------------
 st.set_page_config(
     page_title="LUMINA SOUL",
     page_icon="🔮",
     layout="centered"
 )
 
-# 2. ระบบสลับภาษา (ปรับให้ปุ่มเล็กลงและชิดขวา)
-if 'lang' not in st.session_state:
-    st.session_state.lang = 'TH'
-
-# ใช้ st.columns เพื่อบีบปุ่มให้เล็กและอยู่ขวาสุด
-c_space, c1, c2 = st.columns([6, 1.2, 1.2]) 
-with c1:
-    if st.button("🇹🇭 TH", use_container_width=True):
-        st.session_state.lang = 'TH'
-        st.rerun()
-with c2:
-    if st.button("🇺🇸 EN", use_container_width=True):
-        st.session_state.lang = 'EN'
-        st.rerun()
-
-lang = st.session_state.lang
-
-# 3. คลังคำแปล (Translations)
-translations = {
-    'TH': {
-        'hero_title': "LUMINA SOUL",
-        'hero_subtitle': "พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด",
-        'name_label': "ชื่อ-นามสกุล",
-        'contact_label': "ID Line (เพื่อรับผลสะท้อนพลังงาน)",
-        'submit_btn': "🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ"
-    },
-    'EN': {
-        'hero_title': "LUMINA SOUL",
-        'hero_subtitle': "Life Reflection | Decoding Birth Energy",
-        'name_label': "Full Name",
-        'contact_label': "Line ID / WhatsApp / Email",
-        'submit_btn': "🔮 Decode Your Soul Contract"
-    }
-}
-L = translations[lang]
-
 # -----------------------------
-# CSS (ปรับปรุงการ์ดให้อ่านง่ายบนมือถือ)
+# CSS
 # -----------------------------
 st.markdown("""
 <style>
@@ -58,18 +24,12 @@ html, body, [class*="css"] {
     color: #2f1f38 !important;
 }
 
-/* แก้ปัญหาการ์ดขาวกลืนกันบนมือถือ */
-.result-card, .mini-card, .stat-card, .review-card, .hero-card {
-    background: #ffffff !important; /* บังคับเป็นสีขาวทึบ */
-    border: 1px solid rgba(126, 87, 194, 0.25) !important; /* เพิ่มเส้นขอบม่วงจางๆ */
-    box-shadow: 0 6px 16px rgba(126, 87, 194, 0.12) !important; /* เพิ่มเงาให้ลอยเด่น */
-    border-radius: 20px !important;
-    padding: 20px !important;
-    margin-bottom: 15px !important;
-}
-
 p, span, div, label, li, small {
     color: #2f1f38 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 !important;
 }
 
 div.stButton > button:first-child,
@@ -81,8 +41,17 @@ div[data-testid="stFormSubmitButton"] > button {
     padding: 0.78rem 1.3rem !important;
     font-weight: 700 !important;
     font-size: 1.02rem !important;
+    transition: 0.25s all ease !important;
     box-shadow: 0 6px 18px rgba(186, 104, 200, 0.28) !important;
     width: 100% !important;
+    margin-top: 10px !important;
+}
+
+div.stButton > button:first-child:hover,
+div[data-testid="stFormSubmitButton"] > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(186, 104, 200, 0.38);
+    color: white !important;
 }
 
 .stTextInput > div > div > input,
@@ -91,11 +60,10 @@ div[data-testid="stFormSubmitButton"] > button {
 .stSelectbox div[data-baseweb="select"] > div {
     border-radius: 14px !important;
     border: 1px solid #d9cfe6 !important;
-    background-color: rgba(255,255,255,1) !important;
+    background-color: rgba(255,255,255,0.94) !important;
     color: #2f1f38 !important;
+    -webkit-text-fill-color: #2f1f38 !important;
 }
-</style>
-""", unsafe_allow_html=True)
 
 input::placeholder,
 textarea::placeholder {
