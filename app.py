@@ -11,6 +11,21 @@ st.set_page_config(
 )
 
 # -----------------------------
+# Language state
+# -----------------------------
+if "lang" not in st.session_state:
+    st.session_state.lang = "th"
+
+
+def set_lang(lang: str):
+    st.session_state.lang = lang
+
+
+def tr(th_text: str, en_text: str) -> str:
+    return th_text if st.session_state.lang == "th" else en_text
+
+
+# -----------------------------
 # CSS
 # -----------------------------
 st.markdown("""
@@ -52,6 +67,24 @@ div[data-testid="stFormSubmitButton"] > button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 22px rgba(186, 104, 200, 0.38);
     color: white !important;
+}
+
+.lang-switch-wrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+div[data-testid="column"] .lang-btn div.stButton > button {
+    width: auto !important;
+    min-width: 58px !important;
+    padding: 0.42rem 0.75rem !important;
+    font-size: 0.82rem !important;
+    border-radius: 999px !important;
+    margin-top: 0 !important;
+    box-shadow: 0 4px 12px rgba(186, 104, 200, 0.18) !important;
 }
 
 .stTextInput > div > div > input,
@@ -213,6 +246,12 @@ hr {
     .soft-note {
         font-size: 0.92rem !important;
     }
+
+    div[data-testid="column"] .lang-btn div.stButton > button {
+        min-width: 52px !important;
+        padding: 0.36rem 0.65rem !important;
+        font-size: 0.76rem !important;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -261,148 +300,367 @@ def reduce_number(n: int) -> int:
         n = sum(int(d) for d in str(n))
     return n
 
+
 def life_path_number(day: int, month_num: int, year_be: int) -> int:
     digits = f"{day:02d}{month_num:02d}{year_be}"
     total = sum(int(d) for d in digits)
     return reduce_number(total)
 
+
 def birth_day_energy(day: int) -> int:
     return reduce_number(day)
 
+
 # -----------------------------
-# Meanings
+# Thai-English content
 # -----------------------------
 life_path_meanings = {
-    1: "คุณมีพลังของผู้เริ่มต้น กล้าตัดสินใจ ชอบสร้างเส้นทางของตัวเอง และไม่เหมาะกับการใช้ชีวิตแบบที่ต้องกดตัวตนไว้ตลอดเวลา",
-    2: "คุณมีพลังของผู้ประสานใจ ลึกซึ้ง อ่อนโยน รับความรู้สึกคนอื่นได้ดี และมีพรสวรรค์ในการเชื่อมโยงหัวใจผู้คน",
-    3: "คุณมีพลังแห่งการสื่อสาร ความคิดสร้างสรรค์ และเสน่ห์ตามธรรมชาติ เมื่อคุณกล้าแสดงออก โลกจะเริ่มตอบรับคุณชัดขึ้น",
-    4: "คุณมีพลังแห่งความมั่นคง เป็นคนสร้างรากฐาน เก่งเรื่องระบบ ความรับผิดชอบ และการเปลี่ยนสิ่งเล็ก ๆ ให้กลายเป็นความมั่นคงระยะยาว",
-    5: "คุณมีพลังแห่งอิสรภาพ การเปลี่ยนแปลง การเดินทาง และการเรียนรู้ผ่านประสบการณ์ตรง ชีวิตของคุณจะเติบโตมากเมื่อไม่ฝืนตัวเอง",
-    6: "คุณมีพลังของผู้ดูแลและผู้เยียวยา หัวใจของคุณมีพลังในการโอบอุ้มคนอื่น แต่บทเรียนสำคัญคืออย่าลืมดูแลหัวใจตัวเองด้วย",
-    7: "คุณมีพลังของนักค้นหาความจริง ชอบตั้งคำถาม ชอบเข้าใจชีวิตในระดับลึก และมักมีสายเชื่อมต่อกับโลกภายในอย่างชัดเจน",
-    8: "คุณมีพลังด้านการบริหาร การเงิน ความสำเร็จ และการทำสิ่งใหญ่ให้เกิดขึ้นจริง หากใช้พลังอย่างสมดุล คุณมีศักยภาพสร้างความมั่นคงสูงมาก",
-    9: "คุณมีพลังของผู้ให้ เมตตา เข้าใจมนุษย์ และมักมีบทบาทเกี่ยวข้องกับการช่วยเหลือหรือส่งต่อบางอย่างที่มีความหมายต่อผู้อื่น",
-    11: "คุณมีพลังของผู้ตื่นรู้ สัญชาตญาณแรง รับรู้อะไรลึกกว่าคนทั่วไป และมีศักยภาพเป็นแสงนำทางให้ผู้คนรอบตัว",
-    22: "คุณมีพลังของผู้สร้างสิ่งใหญ่ให้เป็นจริง มองภาพกว้างได้ดี และมีศักยภาพเปลี่ยนวิสัยทัศน์ให้เป็นสิ่งที่จับต้องได้",
-    33: "คุณมีพลังของครูผู้เยียวยา เปี่ยมเมตตา อ่อนโยน และมีภารกิจในการส่งต่อความรัก ความเข้าใจ และแสงสว่างให้ผู้อื่น"
+    1: {
+        "th": "คุณมีพลังของผู้เริ่มต้น กล้าตัดสินใจ ชอบสร้างเส้นทางของตัวเอง และไม่เหมาะกับการใช้ชีวิตแบบที่ต้องกดตัวตนไว้ตลอดเวลา",
+        "en": "You carry the energy of an initiator. You are courageous, decisive, and naturally drawn to create your own path instead of shrinking yourself to fit into someone else’s."
+    },
+    2: {
+        "th": "คุณมีพลังของผู้ประสานใจ ลึกซึ้ง อ่อนโยน รับความรู้สึกคนอื่นได้ดี และมีพรสวรรค์ในการเชื่อมโยงหัวใจผู้คน",
+        "en": "You hold the energy of a harmonizer—sensitive, gentle, and deeply attuned to the emotions of others, with a natural gift for connecting hearts."
+    },
+    3: {
+        "th": "คุณมีพลังแห่งการสื่อสาร ความคิดสร้างสรรค์ และเสน่ห์ตามธรรมชาติ เมื่อคุณกล้าแสดงออก โลกจะเริ่มตอบรับคุณชัดขึ้น",
+        "en": "You carry the energy of expression, creativity, and natural charm. When you allow yourself to be seen and heard, life responds more clearly."
+    },
+    4: {
+        "th": "คุณมีพลังแห่งความมั่นคง เป็นคนสร้างรากฐาน เก่งเรื่องระบบ ความรับผิดชอบ และการเปลี่ยนสิ่งเล็ก ๆ ให้กลายเป็นความมั่นคงระยะยาว",
+        "en": "You embody stability and grounded strength. You are gifted at building systems, taking responsibility, and turning small consistent actions into long-term security."
+    },
+    5: {
+        "th": "คุณมีพลังแห่งอิสรภาพ การเปลี่ยนแปลง การเดินทาง และการเรียนรู้ผ่านประสบการณ์ตรง ชีวิตของคุณจะเติบโตมากเมื่อไม่ฝืนตัวเอง",
+        "en": "You carry the energy of freedom, change, movement, and experience. Your life expands most when you stop forcing yourself into what no longer fits."
+    },
+    6: {
+        "th": "คุณมีพลังของผู้ดูแลและผู้เยียวยา หัวใจของคุณมีพลังในการโอบอุ้มคนอื่น แต่บทเรียนสำคัญคืออย่าลืมดูแลหัวใจตัวเองด้วย",
+        "en": "You hold the energy of a nurturer and healer. Your heart has the power to care deeply for others, but your lesson is to remember your own heart too."
+    },
+    7: {
+        "th": "คุณมีพลังของนักค้นหาความจริง ชอบตั้งคำถาม ชอบเข้าใจชีวิตในระดับลึก และมักมีสายเชื่อมต่อกับโลกภายในอย่างชัดเจน",
+        "en": "You carry the energy of a truth seeker. You are drawn to deeper questions, inner meaning, and often have a strong connection to your inner world."
+    },
+    8: {
+        "th": "คุณมีพลังด้านการบริหาร การเงิน ความสำเร็จ และการทำสิ่งใหญ่ให้เกิดขึ้นจริง หากใช้พลังอย่างสมดุล คุณมีศักยภาพสร้างความมั่นคงสูงมาก",
+        "en": "You carry strong energy for leadership, finance, achievement, and bringing big visions into reality. In balance, you can create solid success and lasting stability."
+    },
+    9: {
+        "th": "คุณมีพลังของผู้ให้ เมตตา เข้าใจมนุษย์ และมักมีบทบาทเกี่ยวข้องกับการช่วยเหลือหรือส่งต่อบางอย่างที่มีความหมายต่อผู้อื่น",
+        "en": "You embody compassion, generosity, and humanitarian energy. You are often connected to helping others or offering something deeply meaningful."
+    },
+    11: {
+        "th": "คุณมีพลังของผู้ตื่นรู้ สัญชาตญาณแรง รับรู้อะไรลึกกว่าคนทั่วไป และมีศักยภาพเป็นแสงนำทางให้ผู้คนรอบตัว",
+        "en": "You carry awakened energy with strong intuition. You often sense things beyond the surface and may serve as a guiding light for others."
+    },
+    22: {
+        "th": "คุณมีพลังของผู้สร้างสิ่งใหญ่ให้เป็นจริง มองภาพกว้างได้ดี และมีศักยภาพเปลี่ยนวิสัยทัศน์ให้เป็นสิ่งที่จับต้องได้",
+        "en": "You hold the energy of a master builder—someone who can turn large visions into tangible reality and create impact on a wider scale."
+    },
+    33: {
+        "th": "คุณมีพลังของครูผู้เยียวยา เปี่ยมเมตตา อ่อนโยน และมีภารกิจในการส่งต่อความรัก ความเข้าใจ และแสงสว่างให้ผู้อื่น",
+        "en": "You carry the energy of a healing teacher—compassionate, gentle, and deeply aligned with sharing love, wisdom, and light with others."
+    }
 }
 
 birth_day_meanings = {
-    1: "วันเกิดของคุณสะท้อนพลังนักบุกเบิก คุณมักไม่ชอบเดินตามกรอบเดิม และมีแรงขับภายในที่ชัดเจน",
-    2: "วันเกิดของคุณสะท้อนพลังความอ่อนโยน การรับรู้ และความสามารถในการเข้าใจความละเอียดอ่อนของผู้คน",
-    3: "วันเกิดของคุณสะท้อนพลังความสดใส ความคิดสร้างสรรค์ และคำพูดที่มีอิทธิพลต่อความรู้สึกของคนรอบตัว",
-    4: "วันเกิดของคุณสะท้อนพลังความมั่นคง ความรับผิดชอบ และความจริงจังต่อสิ่งที่คุณให้คุณค่า",
-    5: "วันเกิดของคุณสะท้อนพลังการเปลี่ยนแปลง การเรียนรู้ ความคล่องตัว และความกล้าลองเส้นทางใหม่",
-    6: "วันเกิดของคุณสะท้อนพลังผู้ดูแล ผู้เยียวยา และหัวใจที่ให้ความสำคัญกับความรักและความสัมพันธ์",
-    7: "วันเกิดของคุณสะท้อนพลังนักสังเกต นักค้นหาความหมาย และคนที่มีโลกภายในลึกกว่าที่คนอื่นมองเห็น",
-    8: "วันเกิดของคุณสะท้อนพลังความมุ่งมั่น อำนาจภายใน และศักยภาพในการสร้างผลลัพธ์ที่จับต้องได้",
-    9: "วันเกิดของคุณสะท้อนพลังแห่งเมตตา ความเข้าใจมนุษย์ และการเรียนรู้เรื่องการปล่อยวาง",
-    11: "วันเกิดของคุณสะท้อนพลังญาณรู้ ความละเอียดทางพลังงาน และการเชื่อมต่อกับสิ่งที่มองไม่เห็น",
-    22: "วันเกิดของคุณสะท้อนพลังผู้สร้างสิ่งใหญ่ มีศักยภาพทำสิ่งที่ส่งผลต่อผู้คนจำนวนมาก",
-    33: "วันเกิดของคุณสะท้อนพลังแห่งการเยียวยา การสอน และการรับใช้ด้วยหัวใจ"
+    1: {
+        "th": "วันเกิดของคุณสะท้อนพลังนักบุกเบิก คุณมักไม่ชอบเดินตามกรอบเดิม และมีแรงขับภายในที่ชัดเจน",
+        "en": "Your birth day reflects pioneering energy. You do not naturally enjoy staying inside old frameworks, and you carry strong internal drive."
+    },
+    2: {
+        "th": "วันเกิดของคุณสะท้อนพลังความอ่อนโยน การรับรู้ และความสามารถในการเข้าใจความละเอียดอ่อนของผู้คน",
+        "en": "Your birth day reflects gentleness, emotional awareness, and a natural ability to understand the subtle feelings of others."
+    },
+    3: {
+        "th": "วันเกิดของคุณสะท้อนพลังความสดใส ความคิดสร้างสรรค์ และคำพูดที่มีอิทธิพลต่อความรู้สึกของคนรอบตัว",
+        "en": "Your birth day reflects brightness, creativity, and words that can influence the emotions of those around you."
+    },
+    4: {
+        "th": "วันเกิดของคุณสะท้อนพลังความมั่นคง ความรับผิดชอบ และความจริงจังต่อสิ่งที่คุณให้คุณค่า",
+        "en": "Your birth day reflects stability, responsibility, and sincere commitment to what matters most to you."
+    },
+    5: {
+        "th": "วันเกิดของคุณสะท้อนพลังการเปลี่ยนแปลง การเรียนรู้ ความคล่องตัว และความกล้าลองเส้นทางใหม่",
+        "en": "Your birth day reflects change, learning, adaptability, and the courage to explore new directions."
+    },
+    6: {
+        "th": "วันเกิดของคุณสะท้อนพลังผู้ดูแล ผู้เยียวยา และหัวใจที่ให้ความสำคัญกับความรักและความสัมพันธ์",
+        "en": "Your birth day reflects the energy of care, healing, and a heart that values love and relationships deeply."
+    },
+    7: {
+        "th": "วันเกิดของคุณสะท้อนพลังนักสังเกต นักค้นหาความหมาย และคนที่มีโลกภายในลึกกว่าที่คนอื่นมองเห็น",
+        "en": "Your birth day reflects the energy of observation, inner meaning, and a rich inner world that others may not fully see."
+    },
+    8: {
+        "th": "วันเกิดของคุณสะท้อนพลังความมุ่งมั่น อำนาจภายใน และศักยภาพในการสร้างผลลัพธ์ที่จับต้องได้",
+        "en": "Your birth day reflects determination, inner authority, and the ability to create concrete results."
+    },
+    9: {
+        "th": "วันเกิดของคุณสะท้อนพลังแห่งเมตตา ความเข้าใจมนุษย์ และการเรียนรู้เรื่องการปล่อยวาง",
+        "en": "Your birth day reflects compassion, understanding of humanity, and important lessons around letting go."
+    },
+    11: {
+        "th": "วันเกิดของคุณสะท้อนพลังญาณรู้ ความละเอียดทางพลังงาน และการเชื่อมต่อกับสิ่งที่มองไม่เห็น",
+        "en": "Your birth day reflects intuitive knowing, energetic sensitivity, and connection to what cannot always be seen."
+    },
+    22: {
+        "th": "วันเกิดของคุณสะท้อนพลังผู้สร้างสิ่งใหญ่ มีศักยภาพทำสิ่งที่ส่งผลต่อผู้คนจำนวนมาก",
+        "en": "Your birth day reflects builder energy with the potential to create something meaningful for many people."
+    },
+    33: {
+        "th": "วันเกิดของคุณสะท้อนพลังแห่งการเยียวยา การสอน และการรับใช้ด้วยหัวใจ",
+        "en": "Your birth day reflects healing, teaching, and heartfelt service."
+    }
 }
 
-month_names = [
-    "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
-    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+month_options = [
+    {"th": "มกราคม", "en": "January", "num": 1},
+    {"th": "กุมภาพันธ์", "en": "February", "num": 2},
+    {"th": "มีนาคม", "en": "March", "num": 3},
+    {"th": "เมษายน", "en": "April", "num": 4},
+    {"th": "พฤษภาคม", "en": "May", "num": 5},
+    {"th": "มิถุนายน", "en": "June", "num": 6},
+    {"th": "กรกฎาคม", "en": "July", "num": 7},
+    {"th": "สิงหาคม", "en": "August", "num": 8},
+    {"th": "กันยายน", "en": "September", "num": 9},
+    {"th": "ตุลาคม", "en": "October", "num": 10},
+    {"th": "พฤศจิกายน", "en": "November", "num": 11},
+    {"th": "ธันวาคม", "en": "December", "num": 12},
 ]
 
-month_map = {
-    "มกราคม": 1,
-    "กุมภาพันธ์": 2,
-    "มีนาคม": 3,
-    "เมษายน": 4,
-    "พฤษภาคม": 5,
-    "มิถุนายน": 6,
-    "กรกฎาคม": 7,
-    "สิงหาคม": 8,
-    "กันยายน": 9,
-    "ตุลาคม": 10,
-    "พฤศจิกายน": 11,
-    "ธันวาคม": 12
+month_energy_meanings = {
+    1: {
+        "th": "พลังของการเริ่มต้นและความชัดเจน",
+        "en": "the energy of beginnings and clarity"
+    },
+    2: {
+        "th": "พลังของความสัมพันธ์และความอ่อนโยน",
+        "en": "the energy of connection and gentleness"
+    },
+    3: {
+        "th": "พลังของการสื่อสารและความคิดสร้างสรรค์",
+        "en": "the energy of communication and creativity"
+    },
+    4: {
+        "th": "พลังของความมั่นคงและการวางรากฐาน",
+        "en": "the energy of stability and foundation-building"
+    },
+    5: {
+        "th": "พลังของการเปลี่ยนแปลงและอิสรภาพ",
+        "en": "the energy of change and freedom"
+    },
+    6: {
+        "th": "พลังของความรัก การดูแล และการเยียวยา",
+        "en": "the energy of love, care, and healing"
+    },
+    7: {
+        "th": "พลังของการค้นหาความหมายภายใน",
+        "en": "the energy of inner searching and meaning"
+    },
+    8: {
+        "th": "พลังของความสำเร็จและการผลักดันเป้าหมาย",
+        "en": "the energy of achievement and forward momentum"
+    },
+    9: {
+        "th": "พลังของการให้ การปล่อยวาง และการเข้าใจชีวิต",
+        "en": "the energy of giving, release, and understanding life"
+    },
+    10: {
+        "th": "พลังของจุดเปลี่ยนและการเปิดวงจรใหม่",
+        "en": "the energy of turning points and new cycles"
+    },
+    11: {
+        "th": "พลังของญาณรู้และการตื่นรู้ภายใน",
+        "en": "the energy of intuition and inner awakening"
+    },
+    12: {
+        "th": "พลังของการปิดวงจรเก่าเพื่อเตรียมสู่การเริ่มต้นใหม่",
+        "en": "the energy of closing old cycles to prepare for a new beginning"
+    }
 }
 
-month_energy_meanings = {
-    1: "พลังของการเริ่มต้นและความชัดเจน",
-    2: "พลังของความสัมพันธ์และความอ่อนโยน",
-    3: "พลังของการสื่อสารและความคิดสร้างสรรค์",
-    4: "พลังของความมั่นคงและการวางรากฐาน",
-    5: "พลังของการเปลี่ยนแปลงและอิสรภาพ",
-    6: "พลังของความรัก การดูแล และการเยียวยา",
-    7: "พลังของการค้นหาความหมายภายใน",
-    8: "พลังของความสำเร็จและการผลักดันเป้าหมาย",
-    9: "พลังของการให้ การปล่อยวาง และการเข้าใจชีวิต",
-    10: "พลังของจุดเปลี่ยนและการเปิดวงจรใหม่",
-    11: "พลังของญาณรู้และการตื่นรู้ภายใน",
-    12: "พลังของการปิดวงจรเก่าเพื่อเตรียมสู่การเริ่มต้นใหม่"
-}
+categories = [
+    {
+        "key": "love",
+        "th": "ความรักและความสัมพันธ์",
+        "en": "Love & Relationships"
+    },
+    {
+        "key": "career",
+        "th": "การงานและเส้นทางชีวิต",
+        "en": "Career & Life Path"
+    },
+    {
+        "key": "money",
+        "th": "โชคลาภและกระแสการเงิน",
+        "en": "Luck & Financial Flow"
+    }
+]
 
 category_advice = {
-    "ความรักและความสัมพันธ์": "นี่คือคำสะท้อนพลังงานเบื้องต้น หากอยากอ่านลึกเฉพาะความสัมพันธ์ของคุณแบบเจาะรายละเอียด สามารถทักเข้ามาได้",
-    "การงานและเส้นทางชีวิต": "นี่คือคำสะท้อนเบื้องต้นของเส้นทางชีวิต หากต้องการอ่านลึกเรื่องงานและจังหวะชีวิตเฉพาะตัว สามารถทักเข้ามาได้",
-    "โชคลาภและกระแสการเงิน": "นี่คือคำสะท้อนเบื้องต้นของกระแสการเงิน หากต้องการอ่านลึกเฉพาะตัวเรื่องเงินและโอกาส สามารถทักเข้ามาได้"
+    "love": {
+        "th": "นี่คือคำสะท้อนพลังงานเบื้องต้น หากอยากอ่านลึกเฉพาะความสัมพันธ์ของคุณแบบเจาะรายละเอียด สามารถทักเข้ามาได้",
+        "en": "This is an initial energetic reflection. If you would like a deeper reading focused specifically on your relationships, you can reach out for a more personalized session."
+    },
+    "career": {
+        "th": "นี่คือคำสะท้อนเบื้องต้นของเส้นทางชีวิต หากต้องการอ่านลึกเรื่องงานและจังหวะชีวิตเฉพาะตัว สามารถทักเข้ามาได้",
+        "en": "This is an initial reflection of your life path. If you would like a deeper reading about career and personal timing, you can contact us for a personalized session."
+    },
+    "money": {
+        "th": "นี่คือคำสะท้อนเบื้องต้นของกระแสการเงิน หากต้องการอ่านลึกเฉพาะตัวเรื่องเงินและโอกาส สามารถทักเข้ามาได้",
+        "en": "This is an initial reflection of your financial flow. If you would like a deeper reading about money, opportunities, and personal timing, you can reach out for a personalized session."
+    }
 }
+
 
 # -----------------------------
 # Generate content
 # -----------------------------
-def generate_main_result(category: str, life_number: int, birth_energy: int, question_text: str) -> str:
-    if category == "ความรักและความสัมพันธ์":
+def generate_main_result(category_key: str, life_number: int, birth_energy: int, question_text: str, lang: str) -> str:
+    if category_key == "love":
         if life_number in [2, 6, 9, 11, 33]:
-            return "พลังความรักของคุณเป็นพลังที่ลึกและจริงใจมาก คุณไม่ได้ต้องการแค่ความสัมพันธ์ แต่ต้องการความเชื่อมโยงที่สัมผัสถึงหัวใจจริง ๆ ช่วงนี้บทเรียนสำคัญคือการแยกให้ออกว่าอะไรคือความรัก และอะไรคือการยอมทนเพราะกลัวเสียใครบางคนไป"
+            return (
+                "พลังความรักของคุณเป็นพลังที่ลึกและจริงใจมาก คุณไม่ได้ต้องการแค่ความสัมพันธ์ แต่ต้องการความเชื่อมโยงที่สัมผัสถึงหัวใจจริง ๆ ช่วงนี้บทเรียนสำคัญคือการแยกให้ออกว่าอะไรคือความรัก และอะไรคือการยอมทนเพราะกลัวเสียใครบางคนไป"
+                if lang == "th" else
+                "Your love energy is deep, sincere, and emotionally real. You are not looking for just any relationship—you are seeking true heart-level connection. Your current lesson is learning to tell the difference between real love and staying because you fear losing someone."
+            )
         elif life_number in [1, 5, 8, 22]:
-            return "ความรักของคุณมักเชื่อมโยงกับบทเรียนเรื่องคุณค่าในตัวเองและขอบเขตที่ชัดเจน คุณมีเสน่ห์และแรงดึงดูดสูง แต่หัวใจจะสงบได้จริงเมื่อคุณเลือกคนที่เคารพตัวตนของคุณ ไม่ใช่คนที่ทำให้คุณต้องเล็กลง"
-        return "หัวใจของคุณกำลังเรียนรู้บางอย่างผ่านความสัมพันธ์ที่ผ่านมา สิ่งที่เกิดขึ้นไม่ได้มาเพื่อทำร้ายคุณ แต่มาเพื่อสอนให้คุณกลับมาเข้าใจความต้องการที่แท้จริงของหัวใจ และเปิดพื้นที่ให้ความสัมพันธ์ที่เหมาะสมกว่าเข้ามา"
+            return (
+                "ความรักของคุณมักเชื่อมโยงกับบทเรียนเรื่องคุณค่าในตัวเองและขอบเขตที่ชัดเจน คุณมีเสน่ห์และแรงดึงดูดสูง แต่หัวใจจะสงบได้จริงเมื่อคุณเลือกคนที่เคารพตัวตนของคุณ ไม่ใช่คนที่ทำให้คุณต้องเล็กลง"
+                if lang == "th" else
+                "Your love path is closely tied to self-worth and healthy boundaries. You carry strong magnetism, but your heart finds peace only when you choose someone who respects who you truly are rather than someone who makes you shrink."
+            )
+        return (
+            "หัวใจของคุณกำลังเรียนรู้บางอย่างผ่านความสัมพันธ์ที่ผ่านมา สิ่งที่เกิดขึ้นไม่ได้มาเพื่อทำร้ายคุณ แต่มาเพื่อสอนให้คุณกลับมาเข้าใจความต้องการที่แท้จริงของหัวใจ และเปิดพื้นที่ให้ความสัมพันธ์ที่เหมาะสมกว่าเข้ามา"
+            if lang == "th" else
+            "Your heart is learning something important through past relationships. What happened was not here only to hurt you—it was here to teach you about your true emotional needs and make space for a healthier connection."
+        )
 
-    if category == "การงานและเส้นทางชีวิต":
+    if category_key == "career":
         if life_number in [1, 4, 8, 22]:
-            return "เส้นทางการงานของคุณไม่ได้ธรรมดา คุณมีพลังในการสร้างบางอย่างให้เกิดขึ้นจริง ช่วงนี้อาจเหมือนถูกกดดันหรือถูกบีบให้ตัดสินใจ แต่แท้จริงแล้วชีวิตกำลังผลักคุณออกจากทางเดิม เพื่อพาไปสู่บทบาทที่ใหญ่และชัดเจนกว่าเดิม"
+            return (
+                "เส้นทางการงานของคุณไม่ได้ธรรมดา คุณมีพลังในการสร้างบางอย่างให้เกิดขึ้นจริง ช่วงนี้อาจเหมือนถูกกดดันหรือถูกบีบให้ตัดสินใจ แต่แท้จริงแล้วชีวิตกำลังผลักคุณออกจากทางเดิม เพื่อพาไปสู่บทบาทที่ใหญ่และชัดเจนกว่าเดิม"
+                if lang == "th" else
+                "Your career path is not ordinary. You carry the energy to build something real. This period may feel pressuring or demanding, but life may actually be pushing you out of an old path and toward a bigger, clearer role."
+            )
         elif life_number in [3, 5, 7, 11]:
-            return "เส้นทางชีวิตของคุณเด่นเรื่องการค้นหา การสื่อสาร และการใช้ตัวตนที่แท้จริงเป็นเครื่องนำทาง งานที่เหมาะกับคุณคือสิ่งที่ทำแล้วใจไม่ฝืน และยิ่งคุณฟังสัญญาณจากข้างในมากเท่าไร เส้นทางจะยิ่งเปิดชัดขึ้น"
-        return "การงานในช่วงนี้อาจดูเหมือนยังไม่ชัด แต่จริง ๆ แล้วคุณกำลังอยู่ในช่วงจัดระเบียบชีวิตใหม่ เพื่อให้สิ่งที่สอดคล้องกับหัวใจมากกว่าเดิมเข้ามาแทนที่ ชีวิตไม่ได้พาคุณหลงทาง มันกำลังพาคุณกลับเข้าหาตัวเอง"
+            return (
+                "เส้นทางชีวิตของคุณเด่นเรื่องการค้นหา การสื่อสาร และการใช้ตัวตนที่แท้จริงเป็นเครื่องนำทาง งานที่เหมาะกับคุณคือสิ่งที่ทำแล้วใจไม่ฝืน และยิ่งคุณฟังสัญญาณจากข้างในมากเท่าไร เส้นทางจะยิ่งเปิดชัดขึ้น"
+                if lang == "th" else
+                "Your life path stands out through exploration, expression, and following your authentic self. The right work for you is work that does not feel like inner resistance. The more you trust your inner signals, the clearer your path becomes."
+            )
+        return (
+            "การงานในช่วงนี้อาจดูเหมือนยังไม่ชัด แต่จริง ๆ แล้วคุณกำลังอยู่ในช่วงจัดระเบียบชีวิตใหม่ เพื่อให้สิ่งที่สอดคล้องกับหัวใจมากกว่าเดิมเข้ามาแทนที่ ชีวิตไม่ได้พาคุณหลงทาง มันกำลังพาคุณกลับเข้าหาตัวเอง"
+            if lang == "th" else
+            "Work may feel uncertain right now, but you may actually be in a period of realignment. Life is not leading you away from yourself—it may be guiding you back to what feels more aligned and true."
+        )
 
     if life_number in [8, 4, 22]:
-        return "พลังการเงินของคุณมีศักยภาพสูงมาก แต่จะเปิดเต็มที่เมื่อคุณจัดระบบความคิดและการตัดสินใจให้ชัดขึ้น เงินของคุณไม่ได้มาเพราะโชคอย่างเดียว แต่มาจากความสามารถในการสร้างมูลค่าและยืนระยะ"
+        return (
+            "พลังการเงินของคุณมีศักยภาพสูงมาก แต่จะเปิดเต็มที่เมื่อคุณจัดระบบความคิดและการตัดสินใจให้ชัดขึ้น เงินของคุณไม่ได้มาเพราะโชคอย่างเดียว แต่มาจากความสามารถในการสร้างมูลค่าและยืนระยะ"
+            if lang == "th" else
+            "Your financial energy has strong potential, but it opens most fully when your thinking and decisions become more structured and clear. Your prosperity is not based on luck alone—it grows through value creation and consistency."
+        )
     elif life_number in [5, 3, 1]:
-        return "กระแสการเงินของคุณสัมพันธ์กับความกล้าลอง ความคิดสร้างสรรค์ และการขยับตัว หากช่วงนี้เงินนิ่งหรือช้า อาจไม่ใช่เพราะคุณไม่มีโชค แต่เป็นเพราะคุณกำลังต้องเปลี่ยนวิธีคิดหรือวิธีเปิดรับโอกาสใหม่"
-    return "การเงินของคุณเชื่อมโยงกับพลังใจอย่างมาก เมื่อใจแบกความกังวลมากเกินไป กระแสทรัพย์จะติดขัดง่าย ช่วงนี้จึงเป็นจังหวะสำคัญในการเคลียร์ความกลัว ความไม่มั่นใจ และกลับมาเชื่อในคุณค่าของตัวเองอีกครั้ง"
+        return (
+            "กระแสการเงินของคุณสัมพันธ์กับความกล้าลอง ความคิดสร้างสรรค์ และการขยับตัว หากช่วงนี้เงินนิ่งหรือช้า อาจไม่ใช่เพราะคุณไม่มีโชค แต่เป็นเพราะคุณกำลังต้องเปลี่ยนวิธีคิดหรือวิธีเปิดรับโอกาสใหม่"
+            if lang == "th" else
+            "Your financial flow is connected to courage, creativity, and movement. If money feels slow right now, it may not mean you lack luck—it may mean a new mindset or a new way of receiving opportunities is needed."
+        )
+    return (
+        "การเงินของคุณเชื่อมโยงกับพลังใจอย่างมาก เมื่อใจแบกความกังวลมากเกินไป กระแสทรัพย์จะติดขัดง่าย ช่วงนี้จึงเป็นจังหวะสำคัญในการเคลียร์ความกลัว ความไม่มั่นใจ และกลับมาเชื่อในคุณค่าของตัวเองอีกครั้ง"
+        if lang == "th" else
+        "Your financial flow is deeply connected to your emotional state. When your heart carries too much fear or pressure, abundance can feel blocked. This may be an important time to release doubt and reconnect with your true worth."
+    )
 
-def generate_soul_message(name: str, category: str, life_number: int, birth_energy: int, month_num: int) -> str:
-    month_energy = month_energy_meanings.get(month_num, "พลังเฉพาะของช่วงเวลาที่คุณเกิด")
-    return f"""
+
+def generate_soul_message(name: str, category_label: str, life_number: int, birth_energy: int, month_num: int, lang: str) -> str:
+    month_energy = month_energy_meanings.get(
+        month_num,
+        {"th": "พลังเฉพาะของช่วงเวลาที่คุณเกิด", "en": "a unique energy connected to the time you were born"}
+    )
+
+    if lang == "th":
+        return f"""
 {name} เป็นคนที่มีพลังภายในเฉพาะตัว และไม่ได้เดินทางมาถึงจุดนี้โดยบังเอิญ
 
 เลขเส้นทางชีวิตของคุณสะท้อนว่า ชีวิตกำลังสอนให้คุณกลับมาใช้พลังแท้ของตัวเองอย่างมีสติ
 ขณะที่พลังวันเกิดของคุณบอกว่า ลึกลงไปแล้วคุณมีศักยภาพบางอย่างที่พร้อมเติบโต หากคุณเลิกสงสัยในคุณค่าของตัวเอง
 
-พลังเดือนเกิดของคุณยังสะท้อนถึง{month_energy}
+พลังเดือนเกิดของคุณยังสะท้อนถึง{month_energy["th"]}
 จึงเป็นไปได้ว่า ชีวิตของคุณไม่ได้มาเพื่ออยู่แบบเดิมไปเรื่อย ๆ
 แต่มาเพื่อเรียนรู้ เติบโต และค่อย ๆ เข้าใกล้เส้นทางที่สอดคล้องกับจิตวิญญาณมากขึ้น
 
 นี่คือการอ่านพลังงานเบื้องต้นเท่านั้น
-หากต้องการอ่านเชิงลึกแบบเฉพาะตัวในเรื่อง{category} สามารถทักมาพูดคุยต่อได้
+หากต้องการอ่านเชิงลึกแบบเฉพาะตัวในเรื่อง{category_label} สามารถทักมาพูดคุยต่อได้
 """.strip()
 
+    return f"""
+{name} carries a unique inner energy and did not arrive at this point by accident.
+
+Your life path number suggests that life is teaching you to return to your true power with more awareness.
+Your birth-day energy also suggests that deep within you, there is a part of you ready to grow once you stop doubting your own worth.
+
+Your birth month reflects {month_energy["en"]}.
+Because of this, your life may not be meant to remain the same forever.
+It may be calling you to learn, evolve, and move closer to a path that feels more aligned with your soul.
+
+This is only a first energetic reflection.
+If you would like a deeper personalized reading in the area of {category_label}, you are welcome to reach out.
+""".strip()
+
+
 # -----------------------------
-# Header
+# Header with language switch
 # -----------------------------
-st.markdown("""
-<div class="hero-title-wrap">
-    <div class="hero-brand">🔮 LUMINA SOUL</div>
-    <div class="hero-subtitle">พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด</div>
-</div>
-""", unsafe_allow_html=True)
+header_left, header_right = st.columns([5.5, 1.3], vertical_alignment="top")
+
+with header_left:
+    st.markdown(
+        f"""
+        <div class="hero-title-wrap">
+            <div class="hero-brand">🔮 LUMINA SOUL</div>
+            <div class="hero-subtitle">{tr("พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด", "A space for reflection | Decode your birth energy")}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with header_right:
+    st.markdown('<div class="lang-switch-wrap"></div>', unsafe_allow_html=True)
+    lang_col1, lang_col2 = st.columns(2)
+    with lang_col1:
+        st.markdown('<div class="lang-btn">', unsafe_allow_html=True)
+        if st.button("TH", key="btn_th", use_container_width=True):
+            set_lang("th")
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    with lang_col2:
+        st.markdown('<div class="lang-btn">', unsafe_allow_html=True)
+        if st.button("EN", key="btn_en", use_container_width=True):
+            set_lang("en")
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
 st.write("---")
 
 st.markdown(
-    """
+    f"""
     <div class="hero-card">
         <p class='center-text' style='font-size:1.05rem; margin-bottom:8px;'>
-        ยินดีต้อนรับสู่พื้นที่แห่งการตื่นรู้และเยียวยาใจ ผ่านสัญญาณจาก Oversoul และรหัสลับวันเกิด เพื่อปลดล็อกศักยภาพในตัวคุณ
+        {tr(
+            "ยินดีต้อนรับสู่พื้นที่แห่งการตื่นรู้และเยียวยาใจ ผ่านสัญญาณจาก Oversoul และรหัสลับวันเกิด เพื่อปลดล็อกศักยภาพในตัวคุณ",
+            "Welcome to a space of awakening and healing through Oversoul guidance and birth-energy decoding to help unlock your inner potential."
+        )}
         </p>
         <p class='center-text soft-note' style='margin-bottom:0;'>
-        บางคำตอบในชีวิต อาจเริ่มต้นจากการเข้าใจพลังงานของตัวเอง
+        {tr(
+            "บางคำตอบในชีวิต อาจเริ่มต้นจากการเข้าใจพลังงานของตัวเอง",
+            "Some of life’s answers may begin with understanding your own energy."
+        )}
         </p>
     </div>
     """,
@@ -410,10 +668,13 @@ st.markdown(
 )
 
 st.markdown(
-    """
+    f"""
     <div class="glow-box">
         <p style="margin:0; color:#3576c5 !important; font-weight:600;">
-        ✨ รหัสลับจิตวิญญาณ... เมื่อคุณเริ่มเข้าใจพลังงานตัวเอง ประตูสู่ความเป็นไปได้ใหม่ ๆ จะเปิดออก
+        {tr(
+            "✨ รหัสลับจิตวิญญาณ... เมื่อคุณเริ่มเข้าใจพลังงานตัวเอง ประตูสู่ความเป็นไปได้ใหม่ ๆ จะเปิดออก",
+            "✨ Soul codes... when you begin to understand your own energy, new doors of possibility begin to open."
+        )}
         </p>
     </div>
     """,
@@ -423,86 +684,130 @@ st.markdown(
 # -----------------------------
 # Trust section
 # -----------------------------
-st.markdown("### 🔑 ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต")
+st.markdown(tr("### 🔑 ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต", "### 🔑 Why many people begin with decoding their life energy"))
 
 c1, c2, c3 = st.columns(3)
 with c1:
-    st.markdown("""
-    <div class="stat-card">
-        <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">เข้าใจตัวเอง</div>
-        <div class="soft-note">เห็นจุดแข็ง จุดเปลี่ยน และบทเรียนที่กำลังเกิดขึ้น</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="stat-card">
+            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("เข้าใจตัวเอง", "Know Yourself")}</div>
+            <div class="soft-note">{tr("เห็นจุดแข็ง จุดเปลี่ยน และบทเรียนที่กำลังเกิดขึ้น", "See your strengths, turning points, and the lessons unfolding in your life")}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 with c2:
-    st.markdown("""
-    <div class="stat-card">
-        <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">สะท้อนชีวิต</div>
-        <div class="soft-note">ช่วยมองความรัก งาน และการเงินในมุมที่ลึกขึ้น</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="stat-card">
+            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("สะท้อนชีวิต", "Reflect on Life")}</div>
+            <div class="soft-note">{tr("ช่วยมองความรัก งาน และการเงินในมุมที่ลึกขึ้น", "Gain deeper insight into love, career, and financial flow")}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 with c3:
-    st.markdown("""
-    <div class="stat-card">
-        <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">ต่อยอดได้จริง</div>
-        <div class="soft-note">หากรู้สึกว่าตรง คุณสามารถอ่านเชิงลึกต่อได้ทันที</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="stat-card">
+            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("ต่อยอดได้จริง", "Take It Further")}</div>
+            <div class="soft-note">{tr("หากรู้สึกว่าตรง คุณสามารถอ่านเชิงลึกต่อได้ทันที", "If it resonates, you can continue with a deeper personalized reading")}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-st.markdown("### 🌕 รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน💫")
+st.markdown(tr("### 🌕 รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน💫", "### 🌕 Reflections from people who resonated with their reading 💫"))
 
 r1, r2 = st.columns(2)
 with r1:
-    st.markdown("""
-    <div class="review-card">
-        <div style="font-weight:700; color:#7b1fa2;">“อ่านแล้วเหมือนมีใครอธิบายชีวิตเราได้”</div>
-        <div class="soft-note">หลายอย่างตรงแบบรู้สึกได้ว่าไม่ใช่แค่คำทั่วไป</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="review-card">
+            <div style="font-weight:700; color:#7b1fa2;">{tr("“อ่านแล้วเหมือนมีใครอธิบายชีวิตเราได้”", '"It felt like someone could finally explain my life."')}</div>
+            <div class="soft-note">{tr("หลายอย่างตรงแบบรู้สึกได้ว่าไม่ใช่แค่คำทั่วไป", "So many parts felt deeply accurate—not like generic words at all")}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 with r2:
-    st.markdown("""
-    <div class="review-card">
-        <div style="font-weight:700; color:#7b1fa2;">“ช่วยให้เข้าใจช่วงชีวิตที่กำลังเปลี่ยน”</div>
-        <div class="soft-note">ยิ่งอ่านยิ่งเห็นภาพว่าบางอย่างที่เกิดขึ้นมีเหตุผลของมัน</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="review-card">
+            <div style="font-weight:700; color:#7b1fa2;">{tr("“ช่วยให้เข้าใจช่วงชีวิตที่กำลังเปลี่ยน”", '"It helped me understand the phase of life I am moving through."')}</div>
+            <div class="soft-note">{tr("ยิ่งอ่านยิ่งเห็นภาพว่าบางอย่างที่เกิดขึ้นมีเหตุผลของมัน", "The more I read, the more I could see that what was happening had meaning")}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-st.markdown("### 🔮 ตัวอย่างสิ่งที่คุณอาจค้นพบ")
-st.markdown("""
-<div class="mini-card">
-• ทำไมบางความสัมพันธ์ถึงเกิดซ้ำในชีวิต<br>
-• ทำไมช่วงนี้งานหรือการเงินถึงติดบางจุด<br>
-• พลังหลักที่ซ่อนอยู่ในตัวคุณ<br>
-• เส้นทางชีวิตที่กำลังเรียกให้คุณเปลี่ยนแปลง
-</div>
-""", unsafe_allow_html=True)
+st.markdown(tr("### 🔮 ตัวอย่างสิ่งที่คุณอาจค้นพบ", "### 🔮 Examples of what you may discover"))
+st.markdown(
+    f"""
+    <div class="mini-card">
+    • {tr("ทำไมบางความสัมพันธ์ถึงเกิดซ้ำในชีวิต", "Why some relationship patterns keep repeating")}<br>
+    • {tr("ทำไมช่วงนี้งานหรือการเงินถึงติดบางจุด", "Why work or money may feel blocked right now")}<br>
+    • {tr("พลังหลักที่ซ่อนอยู่ในตัวคุณ", "The core energy hidden within you")}<br>
+    • {tr("เส้นทางชีวิตที่กำลังเรียกให้คุณเปลี่ยนแปลง", "The life path calling you toward change")}
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # -----------------------------
 # Form
 # -----------------------------
+month_display_list = [m["th"] if st.session_state.lang == "th" else m["en"] for m in month_options]
+category_display_list = [c["th"] if st.session_state.lang == "th" else c["en"] for c in categories]
+
 with st.form("lumina_single_page_form"):
-    name = st.text_input("ชื่อ-นามสกุล")
-    contact = st.text_input("ID Line (เพื่อรับผลสะท้อนพลังงานและสิทธิ์อ่านเชิงลึก)")
+    name = st.text_input(tr("ชื่อ-นามสกุล", "Full Name"))
+    contact = st.text_input(
+        tr(
+            "ID Line (เพื่อรับผลสะท้อนพลังงานและสิทธิ์อ่านเชิงลึก)",
+            "Line ID (to receive your reflection and deeper reading access)"
+        )
+    )
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        birth_day = st.number_input("วันที่เกิด", min_value=1, max_value=31, value=1, step=1)
+        birth_day = st.number_input(tr("วันที่เกิด", "Birth Day"), min_value=1, max_value=31, value=1, step=1)
     with col2:
-        birth_month_name = st.selectbox("เดือนเกิด", month_names)
+        birth_month_index = st.selectbox(
+            tr("เดือนเกิด", "Birth Month"),
+            range(len(month_options)),
+            format_func=lambda i: month_display_list[i]
+        )
     with col3:
-        birth_year = st.number_input("ปี พ.ศ. เกิด", min_value=2450, max_value=2600, value=2535, step=1)
+        birth_year = st.number_input(
+            tr("ปี พ.ศ. เกิด", "Birth Year (B.E.)"),
+            min_value=2450,
+            max_value=2600,
+            value=2535,
+            step=1
+        )
 
-    category = st.selectbox(
-        "ด้านที่คุณต้องการรับพลังงานนำทางในวันนี้:",
-        ["ความรักและความสัมพันธ์", "การงานและเส้นทางชีวิต", "โชคลาภและกระแสการเงิน"]
+    category_index = st.selectbox(
+        tr("ด้านที่คุณต้องการรับพลังงานนำทางในวันนี้:", "Which area would you like energetic guidance for today?"),
+        range(len(categories)),
+        format_func=lambda i: category_display_list[i]
     )
 
-    st.markdown("**⭐️ เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?**")
-    question = st.text_area("", placeholder="แชร์รายละเอียดเรื่องที่ติดค้างในใจแบบสั้น ๆ", height=120)
+    st.markdown(f"**{tr('⭐️ เรื่องที่คุณกังวลใจที่สุดในตอนนี้คืออะไร?', '⭐️ What is your biggest concern right now?')}**")
+    question = st.text_area(
+        "",
+        placeholder=tr(
+            "แชร์รายละเอียดเรื่องที่ติดค้างในใจแบบสั้น ๆ",
+            "Share a short description of what has been on your mind"
+        ),
+        height=120
+    )
 
-    submitted = st.form_submit_button("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ")
+    submitted = st.form_submit_button(tr("🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ", "🔮 Decode My Soul Contract"))
 
 # -----------------------------
 # Processing
@@ -513,13 +818,22 @@ if submitted:
     question_clean = question.strip()
 
     if len(name_clean) < 2:
-        st.error("กรุณากรอกชื่อ-นามสกุลให้ครบถ้วน")
+        st.error(tr("กรุณากรอกชื่อ-นามสกุลให้ครบถ้วน", "Please enter your full name."))
     elif len(contact_clean) < 3:
-        st.error("กรุณากรอก ID Line ให้ถูกต้อง")
+        st.error(tr("กรุณากรอก ID Line ให้ถูกต้อง", "Please enter a valid Line ID."))
     elif len(question_clean) < 5:
-        st.error("กรุณาพิมพ์เรื่องที่กังวลใจสั้น ๆ เพื่อให้คำสะท้อนเหมาะกับคุณมากขึ้น")
+        st.error(tr("กรุณาพิมพ์เรื่องที่กังวลใจสั้น ๆ เพื่อให้คำสะท้อนเหมาะกับคุณมากขึ้น", "Please share a short concern so your reflection can feel more personalized."))
     else:
-        month_num = month_map[birth_month_name]
+        selected_month = month_options[birth_month_index]
+        month_num = selected_month["num"]
+        birth_month_th = selected_month["th"]
+        birth_month_en = selected_month["en"]
+
+        selected_category = categories[category_index]
+        category_key = selected_category["key"]
+        category_label_th = selected_category["th"]
+        category_label_en = selected_category["en"]
+
         day_num = int(birth_day)
         year_num = int(birth_year)
 
@@ -528,18 +842,39 @@ if submitted:
 
         life_meaning = life_path_meanings.get(
             life_number,
-            "คุณมีพลังเฉพาะตัวที่น่าสนใจ และกำลังอยู่ในช่วงเรียนรู้พลังแท้ของตัวเอง"
-        )
+            {
+                "th": "คุณมีพลังเฉพาะตัวที่น่าสนใจ และกำลังอยู่ในช่วงเรียนรู้พลังแท้ของตัวเอง",
+                "en": "You carry a unique energy and may currently be in a phase of learning how to reconnect with your truest self."
+            }
+        )[st.session_state.lang]
+
         birth_meaning = birth_day_meanings.get(
             birth_energy,
-            "วันเกิดของคุณสะท้อนพลังเฉพาะตัวที่ควรค่าแก่การทำความเข้าใจ"
+            {
+                "th": "วันเกิดของคุณสะท้อนพลังเฉพาะตัวที่ควรค่าแก่การทำความเข้าใจ",
+                "en": "Your birth day reflects a unique energy that is worth exploring more deeply."
+            }
+        )[st.session_state.lang]
+
+        main_result = generate_main_result(category_key, life_number, birth_energy, question_clean, st.session_state.lang)
+        soul_message = generate_soul_message(
+            name_clean,
+            category_label_th if st.session_state.lang == "th" else category_label_en,
+            life_number,
+            birth_energy,
+            month_num,
+            st.session_state.lang
         )
+        advice = category_advice.get(
+            category_key,
+            {
+                "th": "หากอยากอ่านลึกเฉพาะตัว สามารถทักเข้ามาได้",
+                "en": "If you would like a deeper personalized reading, feel free to reach out."
+            }
+        )[st.session_state.lang]
 
-        main_result = generate_main_result(category, life_number, birth_energy, question_clean)
-        soul_message = generate_soul_message(name_clean, category, life_number, birth_energy, month_num)
-        advice = category_advice.get(category, "หากอยากอ่านลึกเฉพาะตัว สามารถทักเข้ามาได้")
-
-        birthdate_text = f"{day_num} {birth_month_name} {year_num}"
+        birthdate_text_th = f"{day_num} {birth_month_th} {year_num}"
+        birthdate_text_en = f"{day_num} {birth_month_en} {year_num}"
 
         try:
             requests.post(
@@ -547,19 +882,23 @@ if submitted:
                 json={
                     "name": name_clean,
                     "line_id": contact_clean,
-                    "birthdate": birthdate_text,
+                    "birthdate": birthdate_text_th,
+                    "birthdate_en": birthdate_text_en,
                     "birth_day": day_num,
-                    "birth_month": birth_month_name,
+                    "birth_month": birth_month_th,
+                    "birth_month_en": birth_month_en,
                     "birth_year_be": year_num,
                     "life_path_number": life_number,
                     "birth_day_energy": birth_energy,
-                    "category": category,
+                    "category": category_label_th,
+                    "category_en": category_label_en,
                     "question": question_clean,
                     "result": main_result,
                     "life_meaning": life_meaning,
                     "birth_meaning": birth_meaning,
                     "soul_message": soul_message,
-                    "advice": advice
+                    "advice": advice,
+                    "language": st.session_state.lang
                 },
                 timeout=15
             )
@@ -568,14 +907,19 @@ if submitted:
 
         st.balloons()
         st.write("---")
-        st.success(f"### 🌟 ผลสะท้อนพลังงานเบื้องต้น: คุณ {name_clean}")
+        st.success(
+            tr(
+                f"### 🌟 ผลสะท้อนพลังงานเบื้องต้น: คุณ {name_clean}",
+                f"### 🌟 Your Initial Energy Reflection: {name_clean}"
+            )
+        )
 
         st.markdown(
             f"""
             <div class="result-card">
-                <h4 style="color:#7b1fa2; margin-top:0;">🔢 เลขพลังงานของคุณ</h4>
-                <p><b>เลขเส้นทางชีวิต:</b> {life_number}</p>
-                <p><b>เลขพลังงานวันเกิด:</b> {birth_energy}</p>
+                <h4 style="color:#7b1fa2; margin-top:0;">{tr("🔢 เลขพลังงานของคุณ", "🔢 Your Energy Numbers")}</h4>
+                <p><b>{tr("เลขเส้นทางชีวิต:", "Life Path Number:")}</b> {life_number}</p>
+                <p><b>{tr("เลขพลังงานวันเกิด:", "Birth Day Energy:")}</b> {birth_energy}</p>
             </div>
             """,
             unsafe_allow_html=True
@@ -584,7 +928,7 @@ if submitted:
         st.markdown(
             f"""
             <div class="mini-card">
-                <h4 style="color:#8e24aa; margin-top:0;">🌙 ความหมายพลังชีวิต</h4>
+                <h4 style="color:#8e24aa; margin-top:0;">{tr("🌙 ความหมายพลังชีวิต", "🌙 Life Path Meaning")}</h4>
                 <p>{life_meaning}</p>
             </div>
             """,
@@ -594,7 +938,7 @@ if submitted:
         st.markdown(
             f"""
             <div class="mini-card">
-                <h4 style="color:#8e24aa; margin-top:0;">💎 พลังงานจากวันเกิด</h4>
+                <h4 style="color:#8e24aa; margin-top:0;">{tr("💎 พลังงานจากวันเกิด", "💎 Birth Day Energy")}</h4>
                 <p>{birth_meaning}</p>
             </div>
             """,
@@ -604,7 +948,10 @@ if submitted:
         st.markdown(
             f"""
             <div class="result-card">
-                <h4 style="color:#ad1457; margin-top:0;">🔮 คำสะท้อนในด้าน{category}</h4>
+                <h4 style="color:#ad1457; margin-top:0;">
+                    {tr("🔮 คำสะท้อนในด้าน", "🔮 Reflection for ")}
+                    {category_label_th if st.session_state.lang == "th" else category_label_en}
+                </h4>
                 <p>{main_result}</p>
             </div>
             """,
@@ -616,15 +963,17 @@ if submitted:
         st.markdown(
             f"""
             <div class="mini-card">
-                <h4 style="color:#6a1b9a; margin-top:0;">✨ ข้อความจาก Lumina Soul</h4>
+                <h4 style="color:#6a1b9a; margin-top:0;">{tr("✨ ข้อความจาก Lumina Soul", "✨ A Message from Lumina Soul")}</h4>
                 <p>{soul_message}</p>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-        st.markdown("### ✨ ข้อความจาก Lumina Soul")
-        st.markdown("""
+        st.markdown(tr("### ✨ ข้อความจาก Lumina Soul", "### ✨ A Message from Lumina Soul"))
+        st.markdown(
+            tr(
+                """
 สิ่งที่คุณเห็นข้างต้น เป็นเพียง **การสะท้อนพลังงานเบื้องต้นจากวันเกิดของคุณ**
 
 หลายครั้ง รหัสชีวิตของคนเรา  
@@ -642,15 +991,39 @@ if submitted:
 **การอ่านพลังงานเชิงลึกแบบเฉพาะตัว**
 
 Lumina Soul จะช่วยสะท้อนสิ่งที่ชีวิตของคุณกำลังพยายามบอกคุณอยู่ ✨
-""")
+""",
+                """
+What you see above is only an **initial energetic reflection based on your birth date**.
 
-        st.link_button("✳️👉 คุยกับที่ปรึกษา LUMINA SOUL", "https://lin.ee/jmI4z6G")
+Many times, the codes of our lives  
+do not reveal everything all at once.
+
+There are often deeper layers such as:
+
+• repeating life lessons  
+• relationships that keep entering your path  
+• important timing shifts in your life journey  
+
+If you feel that **part of this message truly resonates with your life**,
+
+you are welcome to reach out for a  
+**deeper personalized energy reading**.
+
+Lumina Soul is here to reflect what your life may be trying to show you ✨
+"""
+            )
+        )
+
+        st.link_button(
+            tr("✳️👉 คุยกับที่ปรึกษา LUMINA SOUL", "✳️👉 Talk to a LUMINA SOUL guide"),
+            "https://lin.ee/jmI4z6G"
+        )
 
 # -----------------------------
 # Footer
 # -----------------------------
 st.write("---")
 st.markdown(
-    "<p style='text-align: center; font-size: 0.82rem; color: #888;'>© 2026 LUMINA SOUL | พื้นที่สะท้อนชีวิตและการตื่นรู้</p>",
+    f"<p style='text-align: center; font-size: 0.82rem; color: #888;'>© 2026 LUMINA SOUL | {tr('พื้นที่สะท้อนชีวิตและการตื่นรู้', 'A space for reflection and awakening')}</p>",
     unsafe_allow_html=True
 )
