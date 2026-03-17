@@ -9,6 +9,29 @@ st.set_page_config(
     page_icon="🔮",
     layout="centered"
 )
+# --- เริ่มวางต่อจากบรรทัดที่ 11 ---
+
+# 1. ตั้งค่า Session State เพื่อจำภาษาที่เลือก
+if 'lang' not in st.session_state:
+    st.session_state.lang = 'TH'
+
+# 2. สร้างปุ่มสลับภาษาไว้ที่แถบข้าง (Sidebar)
+with st.sidebar:
+    st.markdown("### 🌐 Language / ภาษา")
+    col_l1, col_l2 = st.columns(2)
+    with col_l1:
+        if st.button("🇹🇭 TH"):
+            st.session_state.lang = 'TH'
+            st.rerun()
+    with col_l2:
+        if st.button("🇺🇸 EN"):
+            st.session_state.lang = 'EN'
+            st.rerun()
+
+# 3. กำหนดตัวแปรสั้นๆ เพื่อไปใช้ในหน้าเว็บ
+lang = st.session_state.lang
+
+# --- จบส่วนที่เพิ่ม จากนั้นจะเป็นบรรทัดที่ 13 (CSS) เดิมของคุณ ---
 
 # -----------------------------
 # CSS
