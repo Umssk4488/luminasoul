@@ -1,54 +1,18 @@
 import streamlit as st
 import requests
 
-# 1. การตั้งค่าหน้าเว็บ
+# -----------------------------
+# Page config
+# -----------------------------
 st.set_page_config(
     page_title="LUMINA SOUL",
     page_icon="🔮",
     layout="centered"
 )
 
-# 2. ส่วนจัดการภาษา (แสดงผลบนหัวเว็บ)
-if 'lang' not in st.session_state:
-    st.session_state.lang = 'TH'
-
-# ปุ่มสลับภาษาแบบชิดขวา
-c_space, c1, c2 = st.columns([6, 1.2, 1.2]) 
-with c1:
-    if st.button("🇹🇭 TH"):
-        st.session_state.lang = 'TH'
-        st.rerun()
-with c2:
-    if st.button("🇺🇸 EN"):
-        st.session_state.lang = 'EN'
-        st.rerun()
-
-lang = st.session_state.lang
-
-# 3. คลังคำแปล (Translations Dictionary)
-translations = {
-    'TH': {
-        'hero_title': "LUMINA SOUL",
-        'hero_subtitle': "พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด",
-        'welcome_msg': "ยินดีต้อนรับสู่พื้นที่แห่งการตื่นรู้และเยียวยาใจ",
-        'name_label': "ชื่อ-นามสกุล",
-        'contact_label': "ID Line (เพื่อรับผลสะท้อนพลังงาน)",
-        'submit_btn': "🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ"
-    },
-    'EN': {
-        'hero_title': "LUMINA SOUL",
-        'hero_subtitle': "Life Reflection | Decoding Birth Energy",
-        'welcome_msg': "Welcome to a sacred space for awakening and healing",
-        'name_label': "Full Name",
-        'contact_label': "Line ID / WhatsApp / Email",
-        'submit_btn': "🔮 Decode Your Soul Contract"
-    }
-}
-L = translations[lang]
-
-# 4. ส่วนของ CSS เดิม (วางทับเพื่อเริ่มเขียนสไตล์)
-st.markdown("""
-<style>
+# -----------------------------
+# CSS
+# -----------------------------
 st.markdown("""
 <style>
 html, body, [class*="css"] {
