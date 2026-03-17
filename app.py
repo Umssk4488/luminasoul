@@ -1,10 +1,17 @@
-# -----------------------------
-# 2. ส่วนจัดการภาษา (แสดงบนหัวเว็บ)
-# -----------------------------
+import streamlit as st
+import requests
+
+# 1. การตั้งค่าหน้าเว็บ (คงเดิมไว้)
+st.set_page_config(
+    page_title="LUMINA SOUL",
+    page_icon="🔮",
+    layout="centered"
+)
+
+# 2. ระบบสลับภาษาบนหัวเว็บ (เพิ่มใหม่ - Mobile Friendly)
 if 'lang' not in st.session_state:
     st.session_state.lang = 'TH'
 
-# สร้างคอลัมน์เพื่อให้ปุ่มสลับภาษาอยู่ชิดขวาบนหัวเว็บ (Mobile Friendly)
 c_space, c1, c2 = st.columns([6, 1.2, 1.2]) 
 with c1:
     if st.button("🇹🇭 TH"):
@@ -17,14 +24,11 @@ with c2:
 
 lang = st.session_state.lang
 
-# -----------------------------
-# 3. คลังคำแปล (ใช้แสดงผลตามภาษาที่เลือก)
-# -----------------------------
+# 3. คลังคำแปล (เตรียมไว้ใช้เปลี่ยนภาษา)
 translations = {
     'TH': {
         'hero_title': "LUMINA SOUL",
         'hero_subtitle': "พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด",
-        'welcome_msg': "ยินดีต้อนรับสู่พื้นที่แห่งการตื่นรู้และเยียวยาใจ",
         'name_label': "ชื่อ-นามสกุล",
         'contact_label': "ID Line (เพื่อรับผลสะท้อนพลังงาน)",
         'submit_btn': "🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ"
@@ -32,7 +36,6 @@ translations = {
     'EN': {
         'hero_title': "LUMINA SOUL",
         'hero_subtitle': "Life Reflection | Decoding Birth Energy",
-        'welcome_msg': "Welcome to a sacred space for awakening and healing",
         'name_label': "Full Name",
         'contact_label': "Line ID / WhatsApp / Email",
         'submit_btn': "🔮 Decode Your Soul Contract"
@@ -40,15 +43,7 @@ translations = {
 }
 L = translations[lang]
 
-# -----------------------------
-# 4. CSS (โค้ดเดิมของคุณจะเริ่มต่อจากตรงนี้)
-# -----------------------------
-
-# --- จบส่วนที่เพิ่ม จากนั้นจะเป็นบรรทัดที่ 13 (CSS) เดิมของคุณ ---
-
-# -----------------------------
-# CSS
-# -----------------------------
+# 4. CSS (คงโค้ดตกแต่งเดิมของคุณไว้ทั้งหมด)
 st.markdown("""
 <style>
 html, body, [class*="css"] {
@@ -59,6 +54,7 @@ html, body, [class*="css"] {
     background-image: linear-gradient(135deg, #fdfcfb 0%, #e7d7fb 38%, #fdfbfb 68%, #fff2ec 100%);
     color: #2f1f38 !important;
 }
+""")
 
 p, span, div, label, li, small {
     color: #2f1f38 !important;
