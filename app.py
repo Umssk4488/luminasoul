@@ -8,12 +8,12 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. ระบบสลับภาษา (ปรับให้ปุ่มเล็กลงและอยู่บรรทัดเดียวกัน)
+# 2. ระบบสลับภาษา (ปรับให้ปุ่มเล็กลงและชิดขวา)
 if 'lang' not in st.session_state:
     st.session_state.lang = 'TH'
 
-# ใช้ st.columns เพื่อบีบให้ปุ่มมาอยู่บรรทัดเดียวกัน
-c_space, c1, c2 = st.columns([5, 1.5, 1.5]) 
+# ใช้ st.columns เพื่อบีบปุ่มให้เล็กและอยู่ขวาสุด
+c_space, c1, c2 = st.columns([6, 1.2, 1.2]) 
 with c1:
     if st.button("🇹🇭 TH", use_container_width=True):
         st.session_state.lang = 'TH'
@@ -43,8 +43,9 @@ translations = {
     }
 }
 L = translations[lang]
+
 # -----------------------------
-# CSS
+# CSS (ปรับปรุงการ์ดให้อ่านง่ายบนมือถือ)
 # -----------------------------
 st.markdown("""
 <style>
@@ -57,12 +58,18 @@ html, body, [class*="css"] {
     color: #2f1f38 !important;
 }
 
-p, span, div, label, li, small {
-    color: #2f1f38 !important;
+/* แก้ปัญหาการ์ดขาวกลืนกันบนมือถือ */
+.result-card, .mini-card, .stat-card, .review-card, .hero-card {
+    background: #ffffff !important; /* บังคับเป็นสีขาวทึบ */
+    border: 1px solid rgba(126, 87, 194, 0.25) !important; /* เพิ่มเส้นขอบม่วงจางๆ */
+    box-shadow: 0 6px 16px rgba(126, 87, 194, 0.12) !important; /* เพิ่มเงาให้ลอยเด่น */
+    border-radius: 20px !important;
+    padding: 20px !important;
+    margin-bottom: 15px !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    margin: 0 !important;
+p, span, div, label, li, small {
+    color: #2f1f38 !important;
 }
 
 div.stButton > button:first-child,
@@ -74,17 +81,8 @@ div[data-testid="stFormSubmitButton"] > button {
     padding: 0.78rem 1.3rem !important;
     font-weight: 700 !important;
     font-size: 1.02rem !important;
-    transition: 0.25s all ease !important;
     box-shadow: 0 6px 18px rgba(186, 104, 200, 0.28) !important;
     width: 100% !important;
-    margin-top: 10px !important;
-}
-
-div.stButton > button:first-child:hover,
-div[data-testid="stFormSubmitButton"] > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(186, 104, 200, 0.38);
-    color: white !important;
 }
 
 .stTextInput > div > div > input,
@@ -93,10 +91,11 @@ div[data-testid="stFormSubmitButton"] > button:hover {
 .stSelectbox div[data-baseweb="select"] > div {
     border-radius: 14px !important;
     border: 1px solid #d9cfe6 !important;
-    background-color: rgba(255,255,255,0.94) !important;
+    background-color: rgba(255,255,255,1) !important;
     color: #2f1f38 !important;
-    -webkit-text-fill-color: #2f1f38 !important;
 }
+</style>
+""", unsafe_allow_html=True)
 
 input::placeholder,
 textarea::placeholder {
