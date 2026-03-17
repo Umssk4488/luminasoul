@@ -2,31 +2,59 @@ import streamlit as st
 import requests
 
 # -----------------------------
-# Page config
+# 1. Page Config (ต้องอยู่บรรทัดแรกๆ เสมอ)
 # -----------------------------
 st.set_page_config(
     page_title="LUMINA SOUL",
     page_icon="🔮",
     layout="centered"
 )
-# --- เริ่มวางต่อจากบรรทัดที่ 11 ---
 
-# 1. ตั้งค่า Session State เพื่อจำภาษาที่เลือก
+# -----------------------------
+# 2. ส่วนจัดการภาษา (แสดงบนหัวเว็บ)
+# -----------------------------
 if 'lang' not in st.session_state:
     st.session_state.lang = 'TH'
 
-# 2. สร้างปุ่มสลับภาษาไว้ที่แถบข้าง (Sidebar)
-with st.sidebar:
-    st.markdown("### 🌐 Language / ภาษา")
-    col_l1, col_l2 = st.columns(2)
-    with col_l1:
-        if st.button("🇹🇭 TH"):
-            st.session_state.lang = 'TH'
-            st.rerun()
-    with col_l2:
-        if st.button("🇺🇸 EN"):
-            st.session_state.lang = 'EN'
-            st.rerun()
+# สร้างคอลัมน์เพื่อให้ปุ่มสลับภาษาอยู่ชิดขวาบนหัวเว็บ (Mobile Friendly)
+c_space, c1, c2 = st.columns([6, 1.2, 1.2]) 
+with c1:
+    if st.button("🇹🇭 TH"):
+        st.session_state.lang = 'TH'
+        st.rerun()
+with c2:
+    if st.button("🇺🇸 EN"):
+        st.session_state.lang = 'EN'
+        st.rerun()
+
+lang = st.session_state.lang
+
+# -----------------------------
+# 3. คลังคำแปล (ใช้แสดงผลตามภาษาที่เลือก)
+# -----------------------------
+translations = {
+    'TH': {
+        'hero_title': "LUMINA SOUL",
+        'hero_subtitle': "พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด",
+        'welcome_msg': "ยินดีต้อนรับสู่พื้นที่แห่งการตื่นรู้และเยียวยาใจ",
+        'name_label': "ชื่อ-นามสกุล",
+        'contact_label': "ID Line (เพื่อรับผลสะท้อนพลังงาน)",
+        'submit_btn': "🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ"
+    },
+    'EN': {
+        'hero_title': "LUMINA SOUL",
+        'hero_subtitle': "Life Reflection | Decoding Birth Energy",
+        'welcome_msg': "Welcome to a sacred space for awakening and healing",
+        'name_label': "Full Name",
+        'contact_label': "Line ID / WhatsApp / Email",
+        'submit_btn': "🔮 Decode Your Soul Contract"
+    }
+}
+L = translations[lang]
+
+# -----------------------------
+# 4. CSS (โค้ดเดิมของคุณจะเริ่มต่อจากตรงนี้)
+# -----------------------------
 
 # 3. กำหนดตัวแปรสั้นๆ เพื่อไปใช้ในหน้าเว็บ
 lang = st.session_state.lang
