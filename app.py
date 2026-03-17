@@ -8,18 +8,18 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. ระบบสลับภาษาบนหัวเว็บ
+# 2. ระบบสลับภาษา (ปรับให้ปุ่มเล็กลงและอยู่บรรทัดเดียวกัน)
 if 'lang' not in st.session_state:
     st.session_state.lang = 'TH'
 
-# สร้างปุ่มสลับภาษาชิดขวา
-c_space, c1, c2 = st.columns([6, 1.2, 1.2]) 
+# ใช้ st.columns เพื่อบีบให้ปุ่มมาอยู่บรรทัดเดียวกัน
+c_space, c1, c2 = st.columns([5, 1.5, 1.5]) 
 with c1:
-    if st.button("🇹🇭 TH"):
+    if st.button("🇹🇭 TH", use_container_width=True):
         st.session_state.lang = 'TH'
         st.rerun()
 with c2:
-    if st.button("🇺🇸 EN"):
+    if st.button("🇺🇸 EN", use_container_width=True):
         st.session_state.lang = 'EN'
         st.rerun()
 
