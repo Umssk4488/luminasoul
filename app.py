@@ -1,15 +1,48 @@
 import streamlit as st
 import requests
 
-# -----------------------------
-# Page config
-# -----------------------------
+# 1. การตั้งค่าหน้าเว็บ
 st.set_page_config(
     page_title="LUMINA SOUL",
     page_icon="🔮",
     layout="centered"
 )
 
+# 2. ระบบสลับภาษาบนหัวเว็บ
+if 'lang' not in st.session_state:
+    st.session_state.lang = 'TH'
+
+# สร้างปุ่มสลับภาษาชิดขวา
+c_space, c1, c2 = st.columns([6, 1.2, 1.2]) 
+with c1:
+    if st.button("🇹🇭 TH"):
+        st.session_state.lang = 'TH'
+        st.rerun()
+with c2:
+    if st.button("🇺🇸 EN"):
+        st.session_state.lang = 'EN'
+        st.rerun()
+
+lang = st.session_state.lang
+
+# 3. คลังคำแปล (Translations)
+translations = {
+    'TH': {
+        'hero_title': "LUMINA SOUL",
+        'hero_subtitle': "พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด",
+        'name_label': "ชื่อ-นามสกุล",
+        'contact_label': "ID Line (เพื่อรับผลสะท้อนพลังงาน)",
+        'submit_btn': "🔮 ถอดรหัสพันธสัญญาจิตวิญญาณ"
+    },
+    'EN': {
+        'hero_title': "LUMINA SOUL",
+        'hero_subtitle': "Life Reflection | Decoding Birth Energy",
+        'name_label': "Full Name",
+        'contact_label': "Line ID / WhatsApp / Email",
+        'submit_btn': "🔮 Decode Your Soul Contract"
+    }
+}
+L = translations[lang]
 # -----------------------------
 # CSS
 # -----------------------------
