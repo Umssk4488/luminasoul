@@ -58,8 +58,24 @@ div[data-testid="stFormSubmitButton"] > button {
     font-size: 1.02rem !important;
     transition: 0.25s all ease !important;
     box-shadow: 0 6px 18px rgba(186, 104, 200, 0.28) !important;
-    width: 100% !important;
+    width: auto !important;
     margin-top: 10px !important;
+}
+
+div[data-testid="stFormSubmitButton"] > button {
+    width: 100% !important;
+}
+
+.lang-btn div.stButton > button {
+    width: 46px !important;
+    min-width: 46px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    border-radius: 999px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(186, 104, 200, 0.16) !important;
 }
 
 div.stButton > button:first-child:hover,
