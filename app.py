@@ -1075,69 +1075,30 @@ if submitted:
 คุณสามารถทักเข้ามาเพื่อรับ  
 **การอ่านพลังงานเชิงลึกแบบเฉพาะตัว**
 
-Lumina Soul จะช่วยสะท้อนสิ่งที่ชีวิตของคุณกำลังพยายามบอกคุณอยู่ ✨
-""",
-                """
-What you see above is only an **initial energetic reflection based on your birth date**.
-
-Many times, the codes of our lives  
-do not reveal everything all at once.
-
-There are often deeper layers such as:
-
-• repeating life lessons  
-• relationships that keep entering your path  
-• important timing shifts in your life journey  
-
-If you feel that **part of this message truly resonates with your life**,
-
-you are welcome to reach out for a  
-**deeper personalized energy reading**.
-
-Lumina Soul is here to reflect what your life may be trying to show you ✨
-"""
-            )
-        )
-
         st.markdown(
             f"""
-            <div class="result-card">
-                <h4 style="color:#ad1457; margin-top:0;">{tr("🔮 อยากอ่านลึกต่อไหม?", "🔮 Want a deeper reading?")}</h4>
-                <p>
-                    {tr(
-                        "หากข้อความนี้ตรงกับชีวิตคุณ นี่เป็นเพียงการสะท้อนเบื้องต้นเท่านั้น คุณสามารถรับการอ่านเชิงลึกแบบเฉพาะตัวต่อได้",
-                        "If this reading resonates with your life, this is only the beginning. You can continue with a deeper personalized reading."
-                    )}
-                </p>
+            <div class="mini-card">
+                <h4 style="color:#6a1b9a; margin-top:0;">{tr("✨ ข้อความจาก Lumina Soul", "✨ A Message from Lumina Soul")}</h4>
+                <p>{soul_message}</p>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.link_button(
-                tr("💬 ทัก LINE เพื่ออ่านแบบลึก", "💬 Message on LINE for a deeper reading"),
-                "https://lin.ee/jmI4z6G",
-                use_container_width=True
-            )
-        with col_b:
-            st.link_button(
-                tr("✨ ดูบริการ Lumina Soul", "✨ View Lumina Soul Services"),
-                "https://lin.ee/jmI4z6G",
-                use_container_width=True
-            )
-
         st.markdown(
-            f"""<div class="cta-note">{tr("ผลลัพธ์เชิงลึกจะช่วยให้คุณเห็นจังหวะชีวิต ความสัมพันธ์ และบทเรียนที่ชัดขึ้น", "A deeper reading helps reveal your timing, relationship patterns, and core life lessons more clearly.")}</div>""",
+            f"""
+<div class="cta-note">
+{tr(
+"หากบางส่วนของข้อความนี้สะท้อนชีวิตคุณจริง คุณสามารถพูดคุยต่อเพื่อรับการอ่านเชิงลึกแบบเฉพาะตัวได้",
+"If part of this message resonates with your life, you can continue with a deeper personalized reading"
+)}
+</div>
+""",
             unsafe_allow_html=True
         )
 
-# -----------------------------
-# Footer
-# -----------------------------
-st.write("---")
-st.markdown(
-    f"<p style='text-align: center; font-size: 0.82rem; color: #888;'>© 2026 LUMINA SOUL | {tr('พื้นที่สะท้อนชีวิตและการตื่นรู้', 'A space for reflection and awakening')}</p>",
-    unsafe_allow_html=True
-)
+        st.link_button(
+            tr("✳️👉 คุยกับที่ปรึกษา LUMINA SOUL", "✳️👉 Talk to a LUMINA SOUL guide"),
+            "https://lin.ee/jmI4z6G",
+            use_container_width=True
+        )
