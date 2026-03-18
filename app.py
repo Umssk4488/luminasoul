@@ -284,6 +284,26 @@ hr {
         -webkit-text-fill-color: #8d7b9a !important;
     }
 }
+.some-class {
+   ...
+}
+
+/* 👇 วางตรงนี้เลย */
+.top-floating-lang {
+    position: fixed;
+    top: 90px;
+    right: 10px;
+    z-index: 9999;
+    display: flex;
+    gap: 6px;
+}
+
+.lang-chip {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: white;
+}
 </style>
 """, unsafe_allow_html=True)
 
