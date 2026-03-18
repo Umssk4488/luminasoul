@@ -295,7 +295,7 @@ hr {
 
 .top-floating-lang {
     position: absolute;
-    top: -30px;
+    top: -33px;
     right: 0;
     z-index: 10;
     display: flex;
