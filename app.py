@@ -77,6 +77,24 @@ div[data-testid="stFormSubmitButton"] > button {
     font-weight: 700 !important;
     box-shadow: 0 4px 12px rgba(186, 104, 200, 0.16) !important;
 }
+.top-lang-btn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-top: 6px;
+}
+
+.top-lang-btn div.stButton > button {
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    border-radius: 999px !important;
+    font-size: 0.70rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 3px 10px rgba(186, 104, 200, 0.14) !important;
+}
 
 div.stButton > button:first-child:hover,
 div[data-testid="stFormSubmitButton"] > button:hover {
