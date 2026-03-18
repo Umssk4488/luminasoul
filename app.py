@@ -58,42 +58,8 @@ div[data-testid="stFormSubmitButton"] > button {
     font-size: 1.02rem !important;
     transition: 0.25s all ease !important;
     box-shadow: 0 6px 18px rgba(186, 104, 200, 0.28) !important;
-    width: auto !important;
-    margin-top: 10px !important;
-}
-
-div[data-testid="stFormSubmitButton"] > button {
     width: 100% !important;
-}
-
-.lang-btn div.stButton > button {
-    width: 46px !important;
-    min-width: 46px !important;
-    height: 34px !important;
-    padding: 0 !important;
-    margin-top: 0 !important;
-    border-radius: 999px !important;
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
-    box-shadow: 0 4px 12px rgba(186, 104, 200, 0.16) !important;
-}
-.top-lang-btn {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    margin-top: 6px;
-}
-
-.top-lang-btn div.stButton > button {
-    width: 42px !important;
-    min-width: 42px !important;
-    height: 30px !important;
-    padding: 0 !important;
-    margin-top: 0 !important;
-    border-radius: 999px !important;
-    font-size: 0.70rem !important;
-    font-weight: 700 !important;
-    box-shadow: 0 3px 10px rgba(186, 104, 200, 0.14) !important;
+    margin-top: 10px !important;
 }
 
 div.stButton > button:first-child:hover,
@@ -650,34 +616,41 @@ If you would like a deeper personalized reading in the area of {category_label},
 # -----------------------------
 # Header with language switch
 # -----------------------------
-header_left, header_right = st.columns([5.5, 1.3], vertical_alignment="top")
+# Header FIX (ปุ่มมุมขวาบน)
+# -----------------------------
+top_left, top_right = st.columns([9, 1], vertical_alignment="center")
 
-with header_left:
+with top_left:
     st.markdown(
-        f"""
-        <div class="hero-title-wrap">
-            <div class="hero-brand">🔮 LUMINA SOUL</div>
-            <div class="hero-subtitle">{tr("พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด", "A space for reflection | Decode your birth energy")}</div>
+        """
+        <div class="hero-title-wrap" style="margin-bottom:0;">
+            <div class="hero-brand" style="margin-bottom:0;">🔮 LUMINA SOUL</div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-with header_right:
-    st.markdown('<div class="lang-switch-wrap"></div>', unsafe_allow_html=True)
-    lang_col1, lang_col2 = st.columns(2)
-    with lang_col1:
-        st.markdown('<div class="lang-btn">', unsafe_allow_html=True)
-        if st.button("TH", key="btn_th", use_container_width=True):
-            set_lang("th")
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-    with lang_col2:
-        st.markdown('<div class="lang-btn">', unsafe_allow_html=True)
-        if st.button("EN", key="btn_en", use_container_width=True):
-            set_lang("en")
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+with top_right:
+    selected_lang = st.segmented_control(
+        "",
+        options=["TH", "EN"],
+        selection_mode="single",
+        default=st.session_state.lang.upper(),
+        key="lang_switch_top"
+    )
+    if selected_lang and selected_lang.lower() != st.session_state.lang:
+        st.session_state.lang = selected_lang.lower()
+        st.rerun()
+
+st.markdown(
+    f"""
+    <div class="hero-subtitle" style="margin-top:8px; margin-bottom:8px;">
+        {tr("พื้นที่สะท้อนชีวิต | ถอดรหัสลับพลังงานวันเกิด",
+             "A space for reflection | Decode your birth energy")}
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 st.write("---")
 
