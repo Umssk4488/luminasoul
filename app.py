@@ -299,14 +299,39 @@ hr {
     right: 0;
     z-index: 10;
     display: flex;
-    gap: 6px;
+    gap: 8px;
 }
 
 .lang-chip {
-    font-size: 12px;
-    padding: 4px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 28px;
+    padding: 0 10px;
     border-radius: 999px;
-    background: white;
+    background: rgba(255,255,255,0.88);
+    color: #6e4a7d !important;
+    text-decoration: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid rgba(186, 104, 200, 0.18);
+    box-shadow: 0 4px 14px rgba(186, 104, 200, 0.12);
+    backdrop-filter: blur(8px);
+    transition: all 0.22s ease;
+}
+
+.lang-chip:hover {
+    background: rgba(255,255,255,0.98);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(186, 104, 200, 0.18);
+}
+
+.lang-chip.active {
+    background: linear-gradient(to right, #ba68c8, #f06292);
+    color: white !important;
+    border: none;
+    box-shadow: 0 6px 18px rgba(186, 104, 200, 0.22);
 }
 
 </style>
