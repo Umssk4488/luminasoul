@@ -289,11 +289,15 @@ hr {
 }
 
 /* 👇 วางตรงนี้เลย */
+.hero-header-box {
+    position: relative;
+}
+
 .top-floating-lang {
-    position: fixed;
-    top: 90px;
-    right: 10px;
-    z-index: 9999;
+    position: absolute;
+    top: 6px;
+    right: 0;
+    z-index: 10;
     display: flex;
     gap: 6px;
 }
@@ -304,6 +308,7 @@ hr {
     border-radius: 999px;
     background: white;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -640,13 +645,17 @@ If you would like a deeper personalized reading in the area of {category_label},
 # -----------------------------
 st.markdown(
     f"""
-    <div class="top-floating-lang">
-        <a href="?lang=th" class="lang-chip {'active' if st.session_state.lang == 'th' else ''}">TH</a>
-        <a href="?lang=en" class="lang-chip {'active' if st.session_state.lang == 'en' else ''}">EN</a>
-    </div>
+    <div class="hero-header-box">
 
-    <div class="hero-title-wrap" style="margin-bottom:0;">
-        <div class="hero-brand" style="margin-bottom:0;">🔮 LUMINA SOUL</div>
+        <div class="top-floating-lang">
+            <a href="?lang=th" class="lang-chip {'active' if st.session_state.lang == 'th' else ''}">TH</a>
+            <a href="?lang=en" class="lang-chip {'active' if st.session_state.lang == 'en' else ''}">EN</a>
+        </div>
+
+        <div class="hero-title-wrap" style="margin-bottom:0;">
+            <div class="hero-brand" style="margin-bottom:0;">🔮 LUMINA SOUL</div>
+        </div>
+
     </div>
     """,
     unsafe_allow_html=True
