@@ -1019,53 +1019,32 @@ if submitted:
             unsafe_allow_html=True
         )
 
-        st.markdown(tr("### ✨ ข้อความจาก Lumina Soul", "### ✨ A Message from Lumina Soul"))
         st.markdown(
-            tr(
-                """
-สิ่งที่คุณเห็นข้างต้น เป็นเพียง **การสะท้อนพลังงานเบื้องต้นจากวันเกิดของคุณ**
+            f"""
+            <div class="mini-card">
+                <h4 style="color:#6a1b9a; margin-top:0;">{tr("✨ ข้อความจาก Lumina Soul", "✨ A Message from Lumina Soul")}</h4>
+                <p>{soul_message}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-หลายครั้ง รหัสชีวิตของคนเรา  
-ไม่ได้เปิดเผยทั้งหมดในครั้งเดียว
-
-ยังมีรายละเอียดที่ลึกกว่า เช่น
-
-• บทเรียนชีวิตที่เกิดซ้ำ  
-• ความสัมพันธ์ที่เข้ามาในชีวิต  
-• จังหวะการเปลี่ยนแปลงของเส้นทางชีวิต  
-
-หากคุณรู้สึกว่า **บางส่วนของข้อความนี้สะท้อนชีวิตคุณจริง**
-
-คุณสามารถทักเข้ามาเพื่อรับ  
-**การอ่านพลังงานเชิงลึกแบบเฉพาะตัว**
-
-Lumina Soul จะช่วยสะท้อนสิ่งที่ชีวิตของคุณกำลังพยายามบอกคุณอยู่ ✨
+        st.markdown(
+            f"""
+<div class="cta-note">
+{tr(
+"หากบางส่วนของข้อความนี้สะท้อนชีวิตคุณจริง คุณสามารถพูดคุยต่อเพื่อรับการอ่านเชิงลึกแบบเฉพาะตัวได้",
+"If part of this message resonates with your life, you can continue with a deeper personalized reading"
+)}
+</div>
 """,
-                """
-What you see above is only an **initial energetic reflection based on your birth date**.
-
-Many times, the codes of our lives  
-do not reveal everything all at once.
-
-There are often deeper layers such as:
-
-• repeating life lessons  
-• relationships that keep entering your path  
-• important timing shifts in your life journey  
-
-If you feel that **part of this message truly resonates with your life**,
-
-you are welcome to reach out for a  
-**deeper personalized energy reading**.
-
-Lumina Soul is here to reflect what your life may be trying to show you ✨
-"""
-            )
+            unsafe_allow_html=True
         )
 
         st.link_button(
             tr("✳️👉 คุยกับที่ปรึกษา LUMINA SOUL", "✳️👉 Talk to a LUMINA SOUL guide"),
-            "https://lin.ee/jmI4z6G"
+            "https://lin.ee/jmI4z6G",
+            use_container_width=True
         )
 
 # -----------------------------
