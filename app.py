@@ -644,21 +644,19 @@ If you would like a deeper personalized reading in the area of {category_label},
 # Header FIX (ปุ่มมุมขวาบน)
 # -----------------------------
 st.markdown(
-    f"""
-    <div class="hero-header-box">
+f"""
+<div class="hero-header-box">
+<div class="top-floating-lang">
+<a href="?lang=th" class="lang-chip {'active' if st.session_state.lang == 'th' else ''}">TH</a>
+<a href="?lang=en" class="lang-chip {'active' if st.session_state.lang == 'en' else ''}">EN</a>
+</div>
 
-        <div class="top-floating-lang">
-            <a href="?lang=th" class="lang-chip {'active' if st.session_state.lang == 'th' else ''}">TH</a>
-            <a href="?lang=en" class="lang-chip {'active' if st.session_state.lang == 'en' else ''}">EN</a>
-        </div>
-
-        <div class="hero-title-wrap" style="margin-bottom:0;">
-            <div class="hero-brand" style="margin-bottom:0;">🔮 LUMINA SOUL</div>
-        </div>
-
-    </div>
-    """,
-    unsafe_allow_html=True
+<div class="hero-title-wrap" style="margin-bottom:0;">
+<div class="hero-brand" style="margin-bottom:0;">🔮 LUMINA SOUL</div>
+</div>
+</div>
+""",
+unsafe_allow_html=True
 )
 
 st.markdown(
