@@ -740,14 +740,14 @@ st.markdown(
 # -----------------------------
 # Trust section
 # -----------------------------
-st.markdown(tr("### 🔯 ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต", "### 🔑 Why many people begin with decoding their life energy"))
+st.markdown(tr("### 🔯 ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต", "### 🔯 Why many people begin with decoding their life energy"))
 
 c1, c2, c3 = st.columns(3)
 with c1:
     st.markdown(
         f"""
         <div class="stat-card">
-            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("เข้าใจตัวเอง", "Know Yourself")}</div>
+            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("⭐️เข้าใจตัวเอง", "Know Yourself")}</div>
             <div class="soft-note">{tr("เห็นจุดแข็ง จุดเปลี่ยน และบทเรียนที่กำลังเกิดขึ้น", "See your strengths, turning points, and the lessons unfolding in your life")}</div>
         </div>
         """,
@@ -758,7 +758,7 @@ with c2:
     st.markdown(
         f"""
         <div class="stat-card">
-            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("สะท้อนชีวิต", "Reflect on Life")}</div>
+            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("⭐️สะท้อนชีวิต", "Reflect on Life")}</div>
             <div class="soft-note">{tr("ช่วยมองความรัก งาน และการเงินในมุมที่ลึกขึ้น", "Gain deeper insight into love, career, and financial flow")}</div>
         </div>
         """,
@@ -769,14 +769,14 @@ with c3:
     st.markdown(
         f"""
         <div class="stat-card">
-            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("ต่อยอดได้จริง", "Take It Further")}</div>
+            <div style="font-size:1.15rem; font-weight:700; color:#8e24aa;">{tr("⭐️ต่อยอดได้จริง", "Take It Further")}</div>
             <div class="soft-note">{tr("หากรู้สึกว่าตรง คุณสามารถอ่านเชิงลึกต่อได้ทันที", "If it resonates, you can continue with a deeper personalized reading")}</div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-st.markdown(tr("### ☪️ รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน💫", "### 🌕 Reflections from people who resonated with their reading 💫"))
+st.markdown(tr("### ☪️ รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน💫", "### ☪️ Reflections from people who resonated with their reading 💫"))
 
 r1, r2 = st.columns(2)
 with r1:
