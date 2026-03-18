@@ -618,29 +618,19 @@ If you would like a deeper personalized reading in the area of {category_label},
 # -----------------------------
 # Header FIX (ปุ่มมุมขวาบน)
 # -----------------------------
-top_left, top_right = st.columns([9, 1], vertical_alignment="center")
+st.markdown(
+    f"""
+    <div class="top-floating-lang">
+        <a href="?lang=th" class="lang-chip {'active' if st.session_state.lang == 'th' else ''}">TH</a>
+        <a href="?lang=en" class="lang-chip {'active' if st.session_state.lang == 'en' else ''}">EN</a>
+    </div>
 
-with top_left:
-    st.markdown(
-        """
-        <div class="hero-title-wrap" style="margin-bottom:0;">
-            <div class="hero-brand" style="margin-bottom:0;">🔮 LUMINA SOUL</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-with top_right:
-    selected_lang = st.segmented_control(
-        "",
-        options=["TH", "EN"],
-        selection_mode="single",
-        default=st.session_state.lang.upper(),
-        key="lang_switch_top"
-    )
-    if selected_lang and selected_lang.lower() != st.session_state.lang:
-        st.session_state.lang = selected_lang.lower()
-        st.rerun()
+    <div class="hero-title-wrap" style="margin-bottom:0;">
+        <div class="hero-brand" style="margin-bottom:0;">🔮 LUMINA SOUL</div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown(
     f"""
