@@ -1021,16 +1021,6 @@ if submitted:
 
         st.markdown(
             f"""
-            <div class="mini-card">
-                <h4 style="color:#6a1b9a; margin-top:0;">{tr("✨ ข้อความจาก Lumina Soul", "✨ A Message from Lumina Soul")}</h4>
-                <p>{soul_message}</p>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            f"""
 <div class="cta-note">
 {tr(
 "หากบางส่วนของข้อความนี้สะท้อนชีวิตคุณจริง คุณสามารถพูดคุยต่อเพื่อรับการอ่านเชิงลึกแบบเฉพาะตัวได้",
