@@ -333,6 +333,27 @@ hr {
     border: none;
     box-shadow: 0 6px 18px rgba(186, 104, 200, 0.22);
 }
+.premium-btn a {
+    display: block;
+    text-align: center;
+    padding: 14px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+
+    background: linear-gradient(135deg, #ff4d8d, #7b61ff);
+    color: white !important;
+
+    box-shadow: 0 8px 20px rgba(123, 97, 255, 0.3);
+
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.premium-btn a:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(123, 97, 255, 0.4);
+}
 
 </style>
 """, unsafe_allow_html=True)
