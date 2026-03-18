@@ -740,7 +740,7 @@ st.markdown(
 # -----------------------------
 # Trust section
 # -----------------------------
-st.markdown(tr("### 🔑 ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต", "### 🔑 Why many people begin with decoding their life energy"))
+st.markdown(tr("### 🔯 ทำไมหลายคนถึงเริ่มจากการถอดรหัสพลังงานชีวิต", "### 🔑 Why many people begin with decoding their life energy"))
 
 c1, c2, c3 = st.columns(3)
 with c1:
@@ -776,7 +776,7 @@ with c3:
         unsafe_allow_html=True
     )
 
-st.markdown(tr("### 🌕 รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน💫", "### 🌕 Reflections from people who resonated with their reading 💫"))
+st.markdown(tr("### ☪️ รีวิวความรู้สึกจากผู้ที่เคยสะท้อนพลังงาน💫", "### 🌕 Reflections from people who resonated with their reading 💫"))
 
 r1, r2 = st.columns(2)
 with r1:
